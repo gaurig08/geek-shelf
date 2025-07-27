@@ -5,11 +5,12 @@ With a serene, forest-inspired aesthetic, floating fireflies, glowing spirit ani
 <br>
 <br>
 ## ✨Features
-- Organize by category: Books, Movies, Series, Anime.  
+- Organize by category: Books, Movies, Series, Anime.
 - Realistic shelf layout — each item is displayed on a digital wooden shelf.  
 - Optional ambient soundscapes to relax while you browse.  
 - Search bar with filters and detail-rich modals.  
-- Smooth transitions and calm, soft UI animations.  
+- Smooth transitions and calm, soft UI animations.
+- Data is stored securely in Cloud Firestore, a scalable cloud-based database.  
 - Private access via Firebase Auth with enforced email whitelist (manual approval required).  
 - Illustrated backdrops and paper-textured cards.  
 - Animated spirit animals and glowing fireflies add a hint of wonder.  
@@ -17,17 +18,20 @@ With a serene, forest-inspired aesthetic, floating fireflies, glowing spirit ani
 
 ## ⚙️ Tech Stack
 
-| Layer        | Tech / Tool               |
-| ------------ | ------------------------- |
-| Frontend     | React, Vite               |
-| Styling      | Tailwind CSS, CSS Modules |
-| Animations   | Framer Motion             |
-| Auth/Backend | Firebase Authentication   |
-| Audio        | Web Audio API             |
-| Routing      | React Router DOM          |
-| Deployment   | Vercel                    |
+| Layer          | Technology / Tool                         |
+| -------------- | ----------------------------------------- |
+| **Frontend**   | React, Vite                               |
+| **Styling**    | Tailwind CSS, CSS Modules                 |
+| **Animations** | Framer Motion                             |
+| **Auth**       | Firebase Authentication (email whitelist) |
+| **Database**   | Cloud Firestore (NoSQL, cloud-hosted)     |
+| **Audio**      | Web Audio API                             |
+| **Routing**    | React Router DOM                          |
+| **Deployment** | Vercel                                    |
 <br>
 
 ## 🌐View the Project
 You can view the hosted version here:  
-🔗[Geek Shelf on Vercel](https://geek-shelf.vercel.app/)
+🔗[Geek Shelf on Vercel](https://geek-shelf.vercel.app/)   
+<br>
+*Access is restricted via an email whitelist — contact the developer for access.*
