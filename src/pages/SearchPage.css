@@ -1,0 +1,49 @@
+.search-detail-container {
+  padding: 100px;
+  display: flex;
+  justify-content: center;
+  background-color: #1e1e2f;
+  color: #fff;
+  position: relative;
+  margin-top: 100px; /* This should push it down from the top */
+
+  
+}
+
+.search-detail-card {
+  background-color: #2b2b3d;
+  border-radius: 16px;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: row;
+  max-width: 800px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.search-detail-image {
+  width: 300px;
+  object-fit: cover;
+  border-right: 2px solid #444;
+}
+
+.search-detail-info {
+  padding: 1.5rem;
+  flex-grow: 1;
+}
+
+.search-detail-info h2 {
+  margin-top: 10;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.search-detail-info p {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+.search-page-wrapper {
+  background: linear-gradient(to bottom, #141434, #252555);
+  height: 100vh;
+  width: 100%;
+}

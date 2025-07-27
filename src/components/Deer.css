@@ -1,0 +1,32 @@
+.deer-container {
+  position: absolute;
+  top: 10px;
+  left: 60%;
+  transform: translateX(-50%);
+  width: 85px;
+  height: auto;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.deer-animal {
+  width: 100%;
+  height: auto;
+  fill: url(#patronusStroke);
+  opacity: 0;
+  animation: fadeInGlow 3s ease-out forwards;
+  filter: drop-shadow(0 0 10px #73c7f5) drop-shadow(0 0 20px #b6e7ff);
+}
+
+@keyframes fadeInGlow {
+  0% {
+    opacity: 0;
+    filter: drop-shadow(0 0 0px #73c7f5);
+  }
+  100% {
+    opacity: 1;
+    filter: drop-shadow(0 0 10px #73c7f5) drop-shadow(0 0 20px #b6e7ff);
+  }
+}
+
+  

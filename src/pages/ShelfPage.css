@@ -1,0 +1,70 @@
+.shelf-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+  min-height: 100vh;
+  width: 100%;
+  flex-wrap: wrap;
+  overflow: visible;
+    /* 🖼️ Background image setup */
+    background-image: url('/bg/search6.jpg'); /* or .png, etc. */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+}
+
+.magic-card {
+  width: 280px;
+  height: 420px;
+  border-radius: 10px;
+  background-color: #f9f5db;
+  background-image: url('/cards/textured-paper.png');
+  background-size: cover;
+  background-blend-mode: multiply;
+  filter: contrast(1.1) brightness(1.05);
+  transform-style: preserve-3d;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform;
+}
+
+.magic-card:hover {
+  transform: perspective(800px) rotateX(8deg) rotateY(6deg) scale(1.04);
+  box-shadow:
+    0 12px 24px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(189, 148, 148, 0.15);
+}
+
+/* Magical glow overlay */
+.magic-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.15), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 2;
+}
+
+.magic-card:hover::before {
+  opacity: 1;
+}
+
+/* Image stays sharp */
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  mix-blend-mode: multiply;
+  opacity: 0.95;
+  pointer-events: none;
+}
+@media (max-width: 768px) {
+  .shelf-fullscreen {
+    flex-direction: column;
+    align-items: center;
+  }
+}

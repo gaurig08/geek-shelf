@@ -1,0 +1,45 @@
+.spirit-container {
+  position: absolute;
+  top: 50px;
+  left: 38%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.spirit-animal {
+  width: 60px;
+  height: auto;
+}
+
+.spirit-glow {
+  fill-opacity: 0.9;
+  filter:
+    drop-shadow(0 0 4px rgba(255, 255, 255, 0.6))
+    drop-shadow(0 0 8px rgba(180, 230, 255, 0.4))
+    blur(0.3px);
+  animation: shimmer-glow 4s ease-in-out infinite alternate;
+}
+
+@keyframes shimmer-glow {
+  0% {
+    filter:
+      drop-shadow(0 0 3px rgba(255, 255, 255, 0.3))
+      drop-shadow(0 0 6px rgba(170, 220, 255, 0.3))
+      blur(0.2px);
+  }
+  100% {
+    filter:
+      drop-shadow(0 0 5px rgba(255, 255, 255, 0.6))
+      drop-shadow(0 0 10px rgba(190, 240, 255, 0.4))
+      blur(0.4px);
+  }
+}
+
+  
+  
+  
+  
+  
+      
+  

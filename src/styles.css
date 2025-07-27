@@ -1,0 +1,54 @@
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  
+  font-family: 'Garamond', serif;
+  background-color: #0a0a0a;
+  background-image: url("/w1.png");
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  -webkit-overflow-scrolling: touch;
+}
+
+body {
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+    background: #0e0e1f;
+    color: #f0f8ff;
+    transition: background 0.3s ease-in-out;
+    font-family: 'Quicksand', sans-serif;
+  
+}
+
+body.no-scroll {
+  overflow: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+
+  .card,
+  .form,
+  .shelf-item,
+  .search-item,
+  .movie-card {
+    width: 100% !important;
+  }
+}
+body {
+  scrollbar-width: none; /* Firefox */
+}
+
+body::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}

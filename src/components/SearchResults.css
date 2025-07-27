@@ -1,0 +1,25 @@
+.search-results {
+  padding: 20px;
+  
+}
+
+.results-heading {
+  font-size: 1.4rem;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  justify-items: center;
+}
+
+.no-results {
+  color: #ccc;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+  
