@@ -6,7 +6,7 @@
   width: 85px;
   height: auto;
   pointer-events: none;
-  z-index: 100;
+  z-index: 1;
 }
 
 .deer-animal {
@@ -14,8 +14,12 @@
   height: auto;
   fill: url(#patronusStroke);
   opacity: 0;
-  animation: fadeInGlow 3s ease-out forwards;
-  filter: drop-shadow(0 0 10px #73c7f5) drop-shadow(0 0 20px #b6e7ff);
+  animation: fadeInGlow 3s ease-out forwards, deerShimmer 4s ease-in-out infinite alternate;
+  filter:
+    drop-shadow(0 0 8px #a7e9ff)
+    drop-shadow(0 0 15px #8edcff)
+    drop-shadow(0 0 22px #73c7f5)
+    blur(0.3px); /* reduced blur */
 }
 
 @keyframes fadeInGlow {
@@ -25,8 +29,27 @@
   }
   100% {
     opacity: 1;
-    filter: drop-shadow(0 0 10px #73c7f5) drop-shadow(0 0 20px #b6e7ff);
+    filter:
+      drop-shadow(0 0 8px #a7e9ff)
+      drop-shadow(0 0 15px #8edcff)
+      drop-shadow(0 0 22px #73c7f5)
+      blur(0.3px); /* reduced blur */
   }
 }
 
-  
+@keyframes deerShimmer {
+  0% {
+    filter:
+      drop-shadow(0 0 6px #a0dfff)
+      drop-shadow(0 0 10px #6fc9ff)
+      drop-shadow(0 0 18px #5ebaff)
+      blur(0.2px); /* reduced blur */
+  }
+  100% {
+    filter:
+      drop-shadow(0 0 10px #e0f8ff)
+      drop-shadow(0 0 20px #a4eaff)
+      drop-shadow(0 0 28px #7ad9ff)
+      blur(0.4px); /* reduced blur */
+  }
+}

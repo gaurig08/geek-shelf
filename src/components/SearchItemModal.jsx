@@ -20,7 +20,7 @@ const SearchItemModal = ({ itemId, category, onClose }) => {
           data = await response.json();
           setItem(data.data);
           break;
-        case "Movie":
+        case "Movies":
           response = await fetch(
             `https://api.themoviedb.org/3/movie/${itemId}?api_key=${import.meta.env.VITE_TMDB_API_KEY}`
           );
@@ -78,12 +78,14 @@ const SearchItemModal = ({ itemId, category, onClose }) => {
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
         <button className="close-button" onClick={onClose}>×</button>
+        <div className="poster-container">
         <img src={image} alt={title} className="modal-poster" />
+        </div>
         <div className="modal-details">
           <h2>{title}</h2>
           <p><strong>Category:</strong> {category}</p>
           <p><strong>Genre:</strong> {genres}</p>
-          <p className="summary">{summary}</p>
+          <p className="summary"><strong>Summary:</strong> {summary}</p>
         </div>
       </div>
     </div>

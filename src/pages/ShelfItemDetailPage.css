@@ -1,62 +1,184 @@
-.detail-container {
-  padding: 40px;
+/* General Page Container */
+.detail-page {
+  padding: 80px 20px;
   display: flex;
   justify-content: center;
+  align-items: center; /* Centering the content vertically */
   font-family: 'Garamond', serif;
-  color: #fff;
+  color: #ffffff;
+  background: linear-gradient(to bottom, #0c0c34, #452572);
+  backdrop-filter: blur(12px); /* Smooth and polished background blur */
+  min-height: 100vh;
+  overflow-y: auto;
+  text-align: center; /* Centering text for the entire page */
 }
 
+/* Detail Card Styling */
 .detail-card {
   display: flex;
+  flex-direction: column;
   gap: 30px;
-  background-color: rgba(0, 0, 0, 0.6);
-  border-radius: 20px;
-  padding: 30px;
+  padding: 2rem;
   max-width: 900px;
   width: 100%;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  border-radius: 20px;
+  backdrop-filter: blur(0px);
+  align-items: center; /* Centering the content horizontally */
+}
+
+/* Poster Image Styling */
+.detail-poster-container {
+  width: 300px; /* Adjust width to increase size of the poster */
+  height: auto;
+  max-height: 600px; /* Make sure it doesn’t get too tall */
+  aspect-ratio: 2 / 3; /* Ensures the aspect ratio stays the same */
+  border-radius: 1rem;
+  overflow: hidden;
+  background: url('/tile-texture.png') repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
+  margin-bottom: 20px; /* Space between poster and other content */
 }
 
 .detail-poster {
-  width: 300px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the image covers the container fully */
+  display: block;
   border-radius: 12px;
 }
 
+/* Info Section - Form Inputs */
 .detail-info {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 15px;
-}
-
-textarea {
+  gap: 30px;
+  text-align: left;
   width: 100%;
+}
+.detail-page select {
+  margin-left: 15px;
   padding: 10px;
-  font-family: inherit;
-  border-radius: 8px;
+  font-family: 'Arial', sans-serif;
+  border-radius: 12px;
+  background-color: #3a3a67;
+  border: 1px solid #4e4e7e;
+  color: #e0d8ff;
+}
+
+.detail-page textarea {
+  width: 100%;
+  margin-top: 15px;
+  padding: 19px;
+  font-family: 'Arial', sans-serif;
+  border-radius: 12px;
   resize: vertical;
+  background-color: #3a3a67;
+  border: 1px solid #4e4e7e;
+  color: #e0d8ff;
+  font-size: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: border-color 0.3s ease;
 }
 
-select {
-  margin-left: 10px;
-  padding: 5px;
-  font-family: inherit;
-  border-radius: 6px;
+
+.detail-page textarea:focus {
+  border-color: #66686c;
+  outline: none;
 }
 
-.save-btn {
-  background-color: #d5aa19;
-  color: #000;
-  padding: 10px 20px;
+.detail-page input[type="text"],
+.detail-page input[type="date"] {
+  width: 40%;
+  padding: 12px;
+  margin-left:15px ;
+  font-family: 'Arial', sans-serif;
+  border-radius: 12px;
+  background-color: #3a3a67;
+  border: 1px solid #4e4e7e;
+  color: #e0d8ff;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.detail-page input[type="text"]:focus,
+.detail-page input[type="date"]:focus {
+  border-color: #d5aa19;
+  outline: none;
+}
+
+/* Labels and Subheadings */
+.detail-page label {
+  font-size: 1.1rem;
+ 
+  color: #f2eef7;
+}
+.detail-page label strong{
+  font-size: 1.1rem;
   font-weight: bold;
+  color: #5b88f9;
+}
+
+h2 {
+  font-size: 1.7rem;
+  color: #ffffff;
+  text-align: center;
+  font-family: 'Cinzel Decorative';
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.15);
+  margin-bottom: 20px;
+}
+
+
+/* Save Button */
+.save-btn {
+  width: 100px;
+  background-color: #4d38b6;
+  color: #000;
+  padding: 12px 24px;
+  
+  font-family: 'Arial', sans-serif;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 20px;
+
   transition: background-color 0.3s ease;
+  box-shadow: 0 0 15px rgba(77, 74, 66, 0.3);
 }
 
 .save-btn:hover {
   background-color: #ffc107;
 }
+
+/* Add space between the 'Your Thoughts' label and input box */
+.detail-page textarea + label {
+  margin-top: 1rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .detail-card {
+    padding: 1.5rem;
+  }
+
+  .poster-container {
+    width: 90%; /* Increase the size on smaller screens */
+    max-height: 400px;
+  }
+
+  .detail-info {
+    padding: 1rem;
+  }
+
+  .save-btn {
+    width: 100%;
+  }
+}
+
+
+
 

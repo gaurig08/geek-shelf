@@ -28,7 +28,7 @@ const HomePage = () => {
           animate={{ opacity: 1 }}
           transition={{ delay: 1, duration: 1 }}
         >
-          Find your next favorite book, movie, or anime — in cozy style 🍂
+          
         </motion.p>
       </div>
     </div>

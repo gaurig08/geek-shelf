@@ -7,11 +7,13 @@
   width: 100%;
   flex-wrap: wrap;
   overflow: visible;
+
     /* 🖼️ Background image setup */
-    background-image: url('/bg/search6.jpg'); /* or .png, etc. */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+  background-image: url('/bg/search7.webp'); /* or .png, etc. */
+ 
+  background-size: cover;
+  background-position: center;
+   background-repeat: no-repeat;
 
 }
 
@@ -19,11 +21,11 @@
   width: 280px;
   height: 420px;
   border-radius: 10px;
-  background-color: #f9f5db;
+  background-color: #cfccb4;
   background-image: url('/cards/textured-paper.png');
   background-size: cover;
-  background-blend-mode: multiply;
-  filter: contrast(1.1) brightness(1.05);
+  background-blend-mode:multiply;
+  filter: contrast(1.1) brightness(1.3);
   transform-style: preserve-3d;
   overflow: hidden;
   cursor: pointer;
@@ -43,7 +45,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.15), transparent 70%);
+  background: radial-gradient(circle at center, rgba(255, 235, 161, 0.25), transparent 70%);
   opacity: 0;
   transition: opacity 0.4s ease;
   z-index: 2;
@@ -57,7 +59,7 @@
 .card-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit:fill;
   mix-blend-mode: multiply;
   opacity: 0.95;
   pointer-events: none;
@@ -66,5 +68,32 @@
   .shelf-fullscreen {
     flex-direction: column;
     align-items: center;
+  }
+}
+
+.shelf-container {
+  padding-top: 4rem; /* Push content down a bit on all screen sizes */
+  padding-bottom: 2rem;
+}
+
+/* Responsive card sizing */
+@media (max-width: 1024px) {
+  .magic-card {
+    width: 220px;
+    height: 330px;
+  }
+}
+
+@media (max-width: 768px) {
+  .magic-card {
+    width: 180px;
+    height: 270px;
+  }
+}
+
+@media (max-width: 480px) {
+  .magic-card {
+    width: 150px;
+    height: 225px;
   }
 }

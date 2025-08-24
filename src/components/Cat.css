@@ -1,10 +1,10 @@
 .spirit-container {
   position: absolute;
-  top: 50px;
-  left: 38%;
+  top: -50px;
+  left: -70%;
   transform: translateX(-50%);
   pointer-events: none;
-  z-index: 1000;
+  z-index: 1;
 }
 
 .spirit-animal {
@@ -13,33 +13,28 @@
 }
 
 .spirit-glow {
-  fill-opacity: 0.9;
+  fill-opacity: 0.75;
   filter:
-    drop-shadow(0 0 4px rgba(255, 255, 255, 0.6))
-    drop-shadow(0 0 8px rgba(180, 230, 255, 0.4))
-    blur(0.3px);
+    drop-shadow(0 0 8px rgba(255, 255, 255, 0.7))
+    drop-shadow(0 0 15px rgba(21, 85, 96, 0.5))
+    drop-shadow(0 0 25px rgba(12, 58, 94, 0.3))
+    blur(1px);
   animation: shimmer-glow 4s ease-in-out infinite alternate;
 }
 
 @keyframes shimmer-glow {
   0% {
     filter:
-      drop-shadow(0 0 3px rgba(255, 255, 255, 0.3))
-      drop-shadow(0 0 6px rgba(170, 220, 255, 0.3))
-      blur(0.2px);
+      drop-shadow(0 0 6px rgba(255, 255, 255, 0.4))
+      drop-shadow(0 0 10px rgba(130, 220, 255, 0.4))
+      drop-shadow(0 0 18px rgba(60, 160, 255, 0.2))
+      blur(0.8px);
   }
   100% {
     filter:
-      drop-shadow(0 0 5px rgba(255, 255, 255, 0.6))
-      drop-shadow(0 0 10px rgba(190, 240, 255, 0.4))
-      blur(0.4px);
+      drop-shadow(0 0 10px rgba(255, 255, 255, 0.85))
+      drop-shadow(0 0 18px rgba(200, 250, 255, 0.6))
+      drop-shadow(0 0 30px rgba(26, 107, 151, 0.4))
+      blur(1.2px);
   }
 }
-
-  
-  
-  
-  
-  
-      
-  

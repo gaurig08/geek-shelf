@@ -1,28 +1,36 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 import "./SearchBar.css";
 
-const SearchBar = ({ onSearch }) => {
-  const [query, setQuery] = useState("");
+const SearchBar = ({ onSearch, category }) => {
+  const [input, setInput] = useState("");
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (query.trim()) onSearch(query);
+  const handleSearch = () => {
+    if (input.trim()) {
+      onSearch(input, category); // Pass the current category to fetchResults
+    }
   };
 
   return (
-    <form onSubmit={handleSearch} className="search-bar">
+    <div className="search-bar">
       <input
         type="text"
-        placeholder="Search your media..."
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        className="search-input"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+        placeholder={`Search here`}
       />
-      <button type="submit" className="search-button">Search</button>
-    </form>
+      <button onClick={handleSearch}>Search</button>
+    </div>
   );
 };
 
+SearchBar.propTypes = {
+  onSearch: PropTypes.func.isRequired,
+  category: PropTypes.string.isRequired,
+};
+
 export default SearchBar;
+
 
 

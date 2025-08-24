@@ -1,50 +1,115 @@
 .modal-overlay {
-    position: fixed;
-    top: 10px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(200, 136, 136, 0.7);
-    display: flex;
-    justify-content: center;
-    z-index: 1900;
-  }
-  
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 15, 30, 0.8);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  z-index: 999;
+  overflow-y: auto;
+  padding: 50px 20px 40px;
+  scroll-behavior: smooth;
+}
+
+.modal {
+  background: linear-gradient(to bottom, #1d1d5a, #28154a);
+  color: #d2d4e8;
+  padding: 2rem;
+  max-width: 420px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  scroll-behavior: smooth;
+  border-radius: 20px;
+  position: relative;
+  box-shadow: 0 0 25px rgba(180, 140, 255, 0.3),
+              0 0 10px rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.poster-container {
+  width: 180px !important;
+  height: 270px;
+  border-radius: 1rem;
+  overflow: hidden;
+  background: url('/tile-texture.png') repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.poster-container:hover {
+  transform: scale(1.02);
+}
+
+.modal-poster {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.modal-details {
+  width: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  padding: 0 0.5rem;
+  scroll-behavior: smooth;
+}
+
+.modal-details h2 {
+  font-size: 1.6rem;
+  text-align: center;
+  font-family: 'Cinzel Decorative', cursive;
+  color: #e7d7ff;
+  margin-bottom: 0.6rem;
+  text-shadow: 0 0 4px rgba(255, 255, 255, 0.1);
+}
+
+.summary {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #dcd3f3;
+  padding-top: 0.5rem;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.close-button:hover {
+  color: #d8b4fe;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
   .modal {
-    background: white;
     padding: 1.5rem;
-    max-width: 600px;
-    width: 90%;
-    display: flex;
-    gap: 1rem;
-    border-radius: 8px;
-    position: relative;
-    margin-top: 100px; 
+    max-width: 90%;
   }
-  
-  .modal-poster {
-    width: 180px;
-    height: auto;
-    border-radius: 4px;
+
+  .poster-container {
+    width: 160px !important;
+    height: 240px;
   }
-  
-  .modal-details {
-    flex: 1;
-    overflow-y: auto;
-  }
-  
-  .close-button {
-    position: absolute;
-    top: 10px;
-    right: 12px;
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-  }
-  
-  .summary {
-    margin-top: 5rem;
-  }
-  
-  
+}
+

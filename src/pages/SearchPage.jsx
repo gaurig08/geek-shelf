@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SearchBar from "../components/SearchBar";
 import SearchResults from "../components/SearchResults";
-import SearchItemModal from "../components/SearchItemModal"; // <-- create this
-import "./SearchPage.css";
-import { fetchSafeAnime } from "../utils/fetchSafeAnime";
+import SearchItemModal from "../components/SearchItemModal";
 import SpiritOrb from "../components/SpiritOrb";
-import FloatingLotus from "../components/FloatingLotus";
+import SpiritOrb1 from "../components/SpiritOrb1";
 import GlowingSpiritAnimal from "../components/GlowingSpiritAnimal";
 import Cat from "../components/Cat";
 
+import { fetchSafeAnime } from "../utils/fetchSafeAnime";
+import { isSafeContent } from "../utils/safeFilter"; // ✅ add this
+
+import "./SearchPage.css";
 
 const SearchPage = () => {
   const [category, setCategory] = useState("Movies");
@@ -21,28 +23,31 @@ const SearchPage = () => {
       let response, data;
 
       switch (category) {
-
         case "Series":
           response = await fetch(
             `https://api.themoviedb.org/3/search/tv?api_key=${import.meta.env.VITE_TMDB_API_KEY}&query=${query}`
           );
           data = await response.json();
-          setResults(data.results);
+          setResults((data.results || []).filter((series) => isSafeContent(series, "series")));
           break;
-          case "Movie":
-            response = await fetch(
-              `https://api.themoviedb.org/3/search/movie?api_key=${import.meta.env.VITE_TMDB_API_KEY}&query=${query}`
-            );
-            data = await response.json();
-            setResults(data.results);
-            break;
-         case "Book":
+
+        case "Movie":
+        case "Movies":
+          response = await fetch(
+            `https://api.themoviedb.org/3/search/movie?api_key=${import.meta.env.VITE_TMDB_API_KEY}&query=${query}`
+          );
+          data = await response.json();
+          setResults((data.results || []).filter((movie) => isSafeContent(movie, "movie")));
+          break;
+
+        case "Book":
           response = await fetch(
             `https://www.googleapis.com/books/v1/volumes?q=${query}&key=${import.meta.env.VITE_GOOGLE_BOOKS_API_KEY}`
           );
           data = await response.json();
-          setResults(data.items || []);
+          setResults((data.items || []).filter((book) => isSafeContent(book, "book")));
           break;
+
         case "Anime":
           const safeAnime = await fetchSafeAnime(query);
           setResults(safeAnime);
@@ -62,47 +67,54 @@ const SearchPage = () => {
   };
 
   return (
-  
-      
-    <div className={`search-page-wrapper ${category.toLowerCase()}-bg`}>
-      <SpiritOrb />
-      <GlowingSpiritAnimal />
-      <Cat />
-      <FloatingLotus />
-      <div style={{ height: "70px" }}></div>
+    <>
+      <div className="background-layer" />
 
-      <div className="search-page-content">
-      
-
-        <div className="category-filter">
-          <label>Filter by:</label>
-          <select value={category} onChange={(e) => setCategory(e.target.value)}>
-            <option value="Movie">Movies</option>
-            <option value="Series">Series</option>
-            <option value="Book">Books</option>
-            <option value="Anime">Anime</option>
-          </select>
+      <div className={`search-page-wrapper ${category.toLowerCase()}-bg`}>
+        <div className="spirit-animal-container">
+          <div className="spirit-orb-wrapper">
+            <SpiritOrb />
+            <SpiritOrb1 />
+          </div>
+          <div className="glowing-animal-wrapper">
+            <GlowingSpiritAnimal />
+          </div>
+          <div className="cat-wrapper">
+            <Cat />
+          </div>
         </div>
 
-        <SearchBar onSearch={fetchResults} />
-        <SearchResults
-          results={results}
-          category={category}
-          onInfoClick={handleInfoClick}
-        />
+        <div style={{ height: "70px" }}></div>
 
-        {showModal && (
-          <SearchItemModal
-            itemId={selectedItemId}
+        <div className="search-page-content">
+          <div className="category-filter">
+            <label>Filter by:</label>
+            <select value={category} onChange={(e) => setCategory(e.target.value)}>
+              <option value="Movie">Movies</option>
+              <option value="Series">Series</option>
+              <option value="Book">Books</option>
+              <option value="Anime">Anime</option>
+            </select>
+          </div>
+
+          <SearchBar onSearch={fetchResults} />
+          <SearchResults
+            results={results}
             category={category}
-            onClose={() => setShowModal(false)}
+            onInfoClick={handleInfoClick}
           />
-        )}
+
+          {showModal && (
+            <SearchItemModal
+              itemId={selectedItemId}
+              category={category}
+              onClose={() => setShowModal(false)}
+            />
+          )}
+        </div>
       </div>
-    </div>
-   
+    </>
   );
 };
 
 export default SearchPage;
-

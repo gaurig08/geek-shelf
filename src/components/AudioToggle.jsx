@@ -1,46 +1,8 @@
-import { useState, useRef, useEffect } from "react";
 import { FaVolumeUp, FaVolumeMute } from "react-icons/fa";
+import { useAudio } from "../utils/AudioContext";
 
 const AudioToggle = () => {
-  const [isPlaying, setIsPlaying] = useState(false); // Default to muted if autoplay fails
-  const audioRef = useRef(new Audio("/sounds/ambient.mp3"));
-
-  useEffect(() => {
-    const audio = audioRef.current;
-    audio.loop = true;
-    audio.volume = 0.5;
-
-    const tryPlay = async () => {
-      try {
-        await audio.play();
-        setIsPlaying(true); // Update state only if playback starts
-      } catch (err) {
-        // Autoplay blocked, wait for user interaction
-        const handleFirstClick = () => {
-          audio.play();
-          setIsPlaying(true); // Update state when user clicks
-          document.removeEventListener("click", handleFirstClick);
-        };
-        document.addEventListener("click", handleFirstClick);
-      }
-    };
-
-    tryPlay();
-
-    return () => {
-      audio.pause();
-    };
-  }, []);
-
-  const toggleAudio = () => {
-    const audio = audioRef.current;
-    if (isPlaying) {
-      audio.pause();
-    } else {
-      audio.play();
-    }
-    setIsPlaying(!isPlaying);
-  };
+  const { isPlaying, toggleAudio } = useAudio();
 
   return (
     <button
@@ -64,4 +26,5 @@ const AudioToggle = () => {
 };
 
 export default AudioToggle;
+
 

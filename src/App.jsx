@@ -12,9 +12,10 @@ import NavBar from "./components/NavBar";
 import AudioToggle from "./components/AudioToggle";
 import FirefliesCanvas from "./components/FirefliesCanvas";
 import ProtectedRoute from "./auth/PrivateRoute";
-import { AuthProvider } from "./auth/AuthContext";
+import { AuthProvider } from "./auth/AuthProvider";
 import "./styles.css";
 import PageTransition from "./components/PageTransition";
+import { AudioProvider } from "./utils/AudioContext";
 
 const App = () => {
   const location = useLocation();
@@ -22,6 +23,7 @@ const App = () => {
 
   return (
     <AuthProvider>
+       <AudioProvider>
       {!isAuthPage && (
         <>
           <FirefliesCanvas />
@@ -79,6 +81,7 @@ const App = () => {
           />
         </Routes>
       </AnimatePresence>
+      </AudioProvider>
     </AuthProvider>
   );
 };

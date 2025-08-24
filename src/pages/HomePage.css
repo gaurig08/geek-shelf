@@ -1,35 +1,51 @@
 .home-container {
   position: relative;
   z-index: 0;
-  background-image: url("/bg/w1.png");
+  background-image: url("/bg/w1.webp");
   background-size: cover;
   background-position: center;
-  height: 100vh;
+  min-height: 100vh; /* Ensure the container takes up at least the viewport height */
   color: white;
   font-family: 'Segoe UI', sans-serif;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 20px; /* Ensure there's some padding on smaller screens */
+  box-sizing: border-box; /* Prevents content from overflowing */
+  overflow: auto; /* Enable scrolling if content overflows */
 }
 
+.overlay {
+  text-align: center;
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.cozy-title {
+  font-size: 3rem;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.cozy-subtitle {
+  font-size: 1.2rem;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Make sure the text content is responsive on smaller screens */
+@media (max-width: 768px) {
+  .cozy-title {
+    font-size: 2.2rem; /* Adjust title font size for small screens */
+  }
+
+  .cozy-subtitle {
+    font-size: 1rem; /* Adjust subtitle font size for small screens */
+  }
   
   .overlay {
-    text-align: center;
-    position: absolute;
-    top: 80%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 70%; /* Adjust overlay position on smaller screens */
   }
-  
-  .cozy-title {
-    font-size: 3rem;
-    margin-bottom: 10px;
-    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
-  }
-  
-  .cozy-subtitle {
-    font-size: 1.2rem;
-    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
-  }
-  
+}

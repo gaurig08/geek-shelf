@@ -16,15 +16,15 @@ html, body, #root {
 }
 
 body {
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-    background: #0e0e1f;
-    color: #f0f8ff;
-    transition: background 0.3s ease-in-out;
-    font-family: 'Quicksand', sans-serif;
-  
+  background: #0e0e1f;
+  color: #f0f8ff;
+  transition: background 0.3s ease-in-out;
+  font-family: 'Quicksand', sans-serif;
 }
 
 body.no-scroll {

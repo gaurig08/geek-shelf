@@ -1,80 +1,119 @@
 /* Auth Container */
 .auth-container {
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-image: url("/bg/search3.jpg"); /* Replace with your image path */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    overflow: hidden;
-  }
-  
-  /* Auth Form */
-  .auth-form {
-    background: rgba(18, 16, 29, 0.85);
-    padding: 2.5rem;
-    border-radius: 16px;
-    width: 90%;
-    max-width: 400px;
-    box-shadow: 0 0 30px rgba(162, 104, 255, 0.6);
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-    color: #fff;
-    font-family: "Cinzel Decorative", serif;
-    text-align: center;
-    position: relative;
-  }
-  
-  /* Input Styling */
-  .auth-form input {
-    padding: 12px;
-    border: 1px solid #aaa;
-    border-radius: 8px;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: white;
-    font-size: 1rem;
-    outline: none;
-  }
-  
-  .auth-form input::placeholder {
-    color: #ccc;
-  }
-  
-  /* Button Styling */
-  .auth-form button {
-    width: 50%;
-    padding: 12px;
-    background: linear-gradient(to bottom, #7b2cbf, #5a189a);
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    margin: 0 auto;
-    box-shadow: 0 0 12px rgba(150, 82, 255, 0.6);
-  }
-  
-  .auth-form button:hover {
-    background: linear-gradient(to bottom, #9d4edd, #7b2cbf);
-  }
-  
-  /* Error Message */
-  .auth-error {
-    color: #ff6b6b;
-    font-size: 0.9rem;
-  }
-  
-  /* Link Text */
-  .auth-link {
-    color: #c77dff;
-    cursor: pointer;
-    font-weight: bold;
-    text-decoration: underline;
-  }
-  
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url("/bg/search3.jpg"); /* Replace with your image path */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+/* Auth Form */
+.auth-form {
+  background: rgba(18, 16, 29, 0.85);
+  padding: 2.5rem;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 0 30px rgba(162, 104, 255, 0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  color: #fff;
+  font-family: "Cinzel Decorative", serif;
+  text-align: center;
+  position: relative;
+}
+
+/* Input Styling */
+.auth-form input {
+  padding: 12px;
+  border: 1px solid #aaa;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 1rem;
+  outline: none;
+}
+
+.auth-form input::placeholder {
+  color: #ccc;
+}
+
+/* Primary Button Styling */
+.auth-form button {
+  width: 50%;
+  padding: 12px;
+  background: linear-gradient(to bottom, #7b2cbf, #5a189a);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin: 0 auto;
+  box-shadow: 0 0 12px rgba(150, 82, 255, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-form button:hover {
+  background: linear-gradient(to bottom, #9d4edd, #7b2cbf);
+  transform: scale(1.05);
+}
+
+/* OR Separator */
+.auth-form .or-separator {
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-align: center;
+  color: #ccc;
+  margin: 1rem 0.2;
+}
+
+/* Remove default button styles from Google button */
+.google-btn {
+  width: 181px;
+  height: 47px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(150, 82, 255, 0.6);
+  margin: 0 auto;
+  background: none;
+  border: none;
+}
+
+.google-btn img {
+  max-width: 100%;   /* image fills container */
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.google-btn:hover {
+  transform: scale(1.05);
+}
+
+
+/* Error Message */
+.auth-error {
+  margin: 0rem 0;
+  color: #ff6b6b;
+  font-size: 1rem;
+}
+
+/* Link Text */
+.auth-link {
+  color: #c77dff;
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: underline;
+}

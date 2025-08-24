@@ -4,6 +4,7 @@ import { db } from "../firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import "./ShelfItemDetailPage.css";
+import { color } from "three/tsl";
 
 const ShelfItemDetailPage = () => {
   const { itemId } = useParams();
@@ -56,16 +57,18 @@ const ShelfItemDetailPage = () => {
   if (!item) return <p className="detail-loading">Loading...</p>;
 
   return (
-    <div className="detail-container">
+    <div className="detail-page">
       <div className="detail-card">
-        <img
-          src={item.poster || "https://via.placeholder.com/300x450?text=No+Image"}
-          alt={item.title}
-          className="detail-poster"
-        />
+        <div className="detail-poster-container">
+          <img
+            src={item.poster || "https://via.placeholder.com/300x450?text=No+Image"}
+            alt={item.title}
+            className="detail-poster"
+          />
+        </div>
         <div className="detail-info">
           <h2>{item.title}</h2>
-          <p><strong>Category:</strong> {item.category}</p>
+          <label><strong >Category: </strong>{item.category}</label>
 
           <label>
             <strong>Status:</strong>
@@ -96,7 +99,9 @@ const ShelfItemDetailPage = () => {
             />
           </label>
 
-          <p><strong>Summary:</strong> {item.summary}</p>
+          <label><strong>Summary:</strong> 
+          <p>{item.summary}</p>
+          </label>
 
           <label>
             <strong>Your Thoughts:</strong>
@@ -116,6 +121,7 @@ const ShelfItemDetailPage = () => {
 };
 
 export default ShelfItemDetailPage;
+
 
 
 

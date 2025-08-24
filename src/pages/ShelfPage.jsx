@@ -4,10 +4,10 @@ import "./ShelfPage.css";
 
 
 const CATEGORIES = [
-  { key: "Book", label: "Books", image: "/cards/movies.png" },
-  { key: "Movie", label: "Movies", image: "/cards/movies.png" },
-  { key: "Series", label: "Series", image: "/cards/movies.png" },
-  { key: "Anime", label: "Anime", image: "/cards/movies.png" }
+  { key: "Book", label: "Books", image: "/cards/b.webp" },
+  { key: "Movies", label: "Movies", image: "/cards/m.webp" },
+  { key: "Series", label: "Series", image: "/cards/s.webp" },
+  { key: "Anime", label: "Anime", image: "/cards/a.webp" }
 ];
 
 const ShelfPage = () => {

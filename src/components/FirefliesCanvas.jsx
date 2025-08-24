@@ -7,12 +7,29 @@ const FirefliesCanvas = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    // Set initial size
+    const setCanvasSize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+
+    setCanvasSize();
+
+    // Debounced resize
+    let resizeTimeout;
+    const handleResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        setCanvasSize();
+      }, 200);
+    };
+    window.addEventListener("resize", handleResize);
 
     const fireflies = [];
+    const numFireflies = Math.min(50, Math.floor(window.innerWidth / 50)); // Responsive
 
-    const numFireflies = 50;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isLowPower = prefersReducedMotion;
 
     class Firefly {
       constructor() {
@@ -46,9 +63,13 @@ const FirefliesCanvas = () => {
       draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 223, 100, ${this.alpha})`; // golden glow
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = "rgba(255, 255, 180, 0.8)";
+        ctx.fillStyle = `rgba(255, 223, 100, ${this.alpha})`;
+        if (!isLowPower) {
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = "rgba(255, 255, 180, 0.8)";
+        } else {
+          ctx.shadowBlur = 0;
+        }
         ctx.fill();
       }
     }
@@ -57,21 +78,40 @@ const FirefliesCanvas = () => {
       fireflies.push(new Firefly());
     }
 
+    let animationRunning = true;
+
     const animate = () => {
+      if (!animationRunning) return;
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       fireflies.forEach((f) => {
         f.update();
         f.draw();
       });
-      requestAnimationFrame(animate);
+
+      if ("requestIdleCallback" in window) {
+        requestIdleCallback(animate);
+      } else {
+        setTimeout(animate, 1000 / 30); // fallback ~30fps
+      }
     };
 
     animate();
 
-    window.addEventListener("resize", () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    });
+    // Pause when tab is hidden
+    const handleVisibilityChange = () => {
+      animationRunning = !document.hidden;
+      if (animationRunning) animate();
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      animationRunning = false;
+    };
   }, []);
 
   return (
@@ -82,12 +122,10 @@ const FirefliesCanvas = () => {
         top: 0,
         left: 0,
         zIndex: 1,
-        pointerEvents: "none", // don't block clicks
+        pointerEvents: "none",
       }}
     />
   );
 };
 
 export default FirefliesCanvas;
-
-

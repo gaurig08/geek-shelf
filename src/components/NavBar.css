@@ -58,3 +58,47 @@
   right: 10px;
   top: 12px;
 }
+/* Category-specific navbar styles */
+.category-navbar .nav-wrapper {
+    display: flex;
+  align-items: center;
+  padding: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100%;
+}
+
+.category-navbar .nav-toggle {
+  color: rgb(238, 222, 222); /* White color for the toggle button */
+  cursor: pointer;
+
+  background: transparent;
+  border: none;
+  margin-right: 20px;
+
+}
+
+.category-navbar .nav-links li a {
+  color: rgb(239, 237, 237);
+  font-family: 'Garamond' , serif;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.category-navbar .nav-links li a:hover {
+  color: #ffcc00; /* Gold color on hover */
+}
+
+.category-navbar .profile-icon {
+  color: rgb(255, 255, 255); /* White color for the profile icon */
+  margin-left: auto;
+  margin-right: 1rem;
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 12px;
+}

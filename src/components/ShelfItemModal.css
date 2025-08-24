@@ -1,0 +1,112 @@
+/* Basic modal overlay styling */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);  /* Dark background to overlay content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;  /* Ensure modal is above other content */
+  }
+  
+  /* Modal content styling */
+  .modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 900px;  /* Set a max-width for larger screens */
+    box-sizing: border-box;
+    overflow-y: auto;  /* Allow scrolling if content is too large */
+    position: relative;
+  }
+  
+  /* Close button styling */
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: #000;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  
+  /* Basic content styling */
+  .detail-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .detail-card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+  }
+  
+  .detail-poster {
+    width: 300px;
+    height: auto;
+    margin-bottom: 20px;
+    border-radius: 8px;
+  }
+  
+  .detail-info {
+    text-align: left;
+    width: 100%;
+  }
+  
+  /* Labels and form styling */
+  label {
+    margin-bottom: 10px;
+    display: block;
+  }
+  
+  select,
+  input,
+  textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  /* Save button styling */
+  .save-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .save-btn:hover {
+    background-color: #45a049;
+  }
+  
+  /* Mobile responsiveness */
+  @media (max-width: 768px) {
+    .modal-content {
+      width: 90%;
+    }
+  
+    .detail-poster {
+      width: 200px;
+    }
+  
+    .save-btn {
+      width: 100%;
+    }
+  }
+  
+  
+  
+  

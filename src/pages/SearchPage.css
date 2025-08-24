@@ -1,49 +1,109 @@
-.search-detail-container {
-  padding: 100px;
-  display: flex;
-  justify-content: center;
-  background-color: #1e1e2f;
-  color: #fff;
-  position: relative;
-  margin-top: 100px; /* This should push it down from the top */
-
-  
-}
-
-.search-detail-card {
-  background-color: #2b2b3d;
-  border-radius: 16px;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-  display: flex;
-  flex-direction: row;
-  max-width: 800px;
+/* Background overlay */
+.background-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
   width: 100%;
-  overflow: hidden;
-}
-
-.search-detail-image {
-  width: 300px;
-  object-fit: cover;
-  border-right: 2px solid #444;
-}
-
-.search-detail-info {
-  padding: 1.5rem;
-  flex-grow: 1;
-}
-
-.search-detail-info h2 {
-  margin-top: 10;
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
-.search-detail-info p {
-  font-size: 1rem;
-  line-height: 1.6;
-}
-.search-page-wrapper {
   background: linear-gradient(to bottom, #141434, #252555);
-  height: 100vh;
+  background-image: url("/bg/w7.webp");
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+
+/* Make content scroll over it */
+.search-page-wrapper {
+  position: relative;
+  min-height: 100vh;
   width: 100%;
+  z-index: 1; /* above background */
+  overflow-x: hidden;
+  padding-bottom: 100px;
+}
+
+/* Container: allows scrolling with content */
+.spirit-animal-container {
+  position: relative;
+  width: 100%;
+  height: 0; /* Avoid pushing layout */
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* General spirit positioning */
+.spirit-animal-container > div {
+  position: absolute;
+  transform: translateY(-100%);
+}
+
+/* Orb Wrapper */
+.spirit-orb-wrapper {
+  left: 8%;
+  top: 60px;
+}
+
+/* Glowing Animal */
+.glowing-animal-wrapper {
+  left: 60%;
+  top: 12px;
+  transform: translateX(-50%) translateY(-100%);
+}
+
+/* Cat Wrapper */
+.cat-wrapper {
+  left: 38%;
+  top: 110px;
+  transform: translateX(-50%) translateY(-100%);
+}
+.category-filter {
+  margin-left: 5px; /* shifts it to the right */
+  margin-top: 10px;
+}
+
+.category-filter select {
+  background-color: #212127; /* dark mystical background */
+  color: #fff; /* white text for contrast */
+  border: 1px solid #444;
+  padding: 4px 5px;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin-left: 8px;
+  font-family: 'Garamond' , serif;
+}
+
+
+/* Responsive tweaks */
+@media (max-width: 1024px) {
+  .spirit-orb-wrapper {
+    left: 8%;
+    top: 60px;
+  }
+
+  .glowing-animal-wrapper {
+    left: 60%;
+    top: 12px;
+  }
+
+  .cat-wrapper {
+    left: 38%;
+    top: 110px;
+  }
+}
+
+@media (max-width: 600px) {
+  .spirit-orb-wrapper {
+    left: 8%;
+    top: 20px;
+  }
+
+  .glowing-animal-wrapper {
+    left: 60%;
+    top: 12px;
+  }
+
+  .cat-wrapper {
+    left: 38%;
+    top: 110px;
+  }
 }

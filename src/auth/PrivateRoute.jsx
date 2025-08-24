@@ -1,11 +1,11 @@
 // src/components/PrivateRoute.jsx
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../auth/AuthContext";
+import { useAuth } from "../auth/AuthProvider"; // adjust the path if needed
 
 const PrivateRoute = ({ children }) => {
-  const { user } = useAuth();
+  const { currentUser } = useAuth();
 
-  if (!user) {
+  if (!currentUser) {
     return <Navigate to="/login" />;
   }
 
@@ -13,3 +13,4 @@ const PrivateRoute = ({ children }) => {
 };
 
 export default PrivateRoute;
+

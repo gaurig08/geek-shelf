@@ -1,134 +1,291 @@
-/* CATEGORY PAGE WRAPPER */
 .category-page {
   padding: 3rem 2rem;
   min-height: 100vh;
-  background: url('/cozy-parchment-bg.png') center/cover no-repeat fixed;
+  background: url('/bg/wall.webp') center/cover no-repeat fixed;
+
   display: flex;
   flex-direction: column;
   align-items: center;
-  animation: fadeIn 1s ease;
+  
   font-family: 'Quicksand', sans-serif;
+  position: relative; /* Allow positioning of elements inside it */
 }
 
-.category-title {
-  font-size: 2.5rem;
-  color: #4b3621;
-  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
-  margin-bottom: 2rem;
-  font-family: 'Cinzel Decorative', cursive;
-}
-
-/* NOTIFICATION BANNER */
+/* NOTIFICATION */
 .notification {
   background: rgba(255, 255, 210, 0.9);
   padding: 0.75rem 1.5rem;
   border: 1px solid #e8dcb5;
   border-radius: 12px;
   margin-bottom: 1.5rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   color: #3f2c1e;
   font-weight: 600;
-  animation: popIn 0.5s ease;
 }
 
-/* ITEM GRID */
+/* EACH ROW OF ITEMS */
+.shelf-row {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 8rem;
+  position: relative;
+}
+
+/* PLANK UNDER ROW */
+.plank-bg {
+  position: absolute;
+  bottom: -60px;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background-color: #ffffff;
+  background-blend-mode:lighten;
+  filter: contrast(0.9) brightness(1.1);
+  background: url('/bg/plank.webp') repeat-x center/cover;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ITEM GRID INSIDE EACH ROW */
 .item-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(210px, 210px));
   gap: 2rem;
+  justify-content: center;
   width: 100%;
-  max-width: 1000px;
-  justify-items: center;
-}
-
-/* INDIVIDUAL CARD */
-.category-card {
-  background-color: #f9f5e6;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-  overflow: hidden;
-  width: 180px;
-  text-align: center;
-  padding: 1rem;
-  cursor: pointer;
+  z-index: 2;
   position: relative;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  animation: floatIn 0.7s ease forwards;
 }
 
-.category-card:hover {
-  transform: translateY(-6px) scale(1.05);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.15), 0 0 12px rgba(255, 240, 180, 0.6);
+/* CARD */
+.category-card {
+  width: 210px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+  position: relative;
 }
 
-/* LINK INSIDE CARD */
+/* LINK */
 .category-card-link {
   text-decoration: none;
   color: inherit;
-}
-
-.category-card img {
   width: 100%;
-  height: 250px;
+}
+
+/* POSTER CONTAINER */
+.poster-container {
+  width: 100%;
+  height: 270px;
+  border-radius: 1rem;
+  background: url('/tile-texture.png') repeat;
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* POSTER IMAGE */
+.poster-container img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  border-radius: 10px;
+  display: block;
+  border-radius: 1rem;
 }
 
-.category-card h4 {
-  margin-top: 0.6rem;
-  font-weight: 600;
-  font-size: 1rem;
-}
-
-/* DELETE BUTTON */
-.delete-btn {
-  background: #e4b1ab;
+/* DELETE BUTTON - Positioning relative to each item card */
+.delete-icon {
+  position: absolute;
+  top: 45px; /* Distance from the top of the item card */
+  right: 35px; /* Distance from the right edge of the item card */
+  background: rgba(0, 0, 0, 0.6);
   border: none;
-  color: white;
-  padding: 6px 12px;
-  border-radius: 8px;
-  margin-top: 10px;
-  font-size: 0.9rem;
+  border-radius: 50%;
+  padding: 6px;
   cursor: pointer;
-  transition: background 0.2s ease;
+  z-index: 3;
+  color: #ffffff;
+  transition: background 0.3s ease, transform 0.3s ease;
 }
 
-.delete-btn:hover {
-  background: #c2837e;
+.delete-icon:hover {
+  background: rgba(255, 100, 100, 0.7);
+  transform: scale(1.2);
 }
 
-/* ENTRY & ANIMATION STYLES */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* TITLE */
+.category-card h4 {
+  font-size: 1rem;
+  color: #ffffff;
+  text-align: center;
+  margin: 0.6rem 0;
+  padding: 0 0.4 0rem;
+
+  /* magic for ellipsis */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  width: 100%;
+  max-width: 85%;
+  display: block;
+  box-sizing: border-box;
 }
 
-@keyframes floatIn {
-  0% {
-    opacity: 0;
-    transform: translateY(30px) scale(0.95);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-@keyframes popIn {
-  from {
-    transform: scale(0.9);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
+/* Adjusting the delete icon on smaller screens */
+@media (max-width: 600px) {
+  .delete-icon {
+    top: 45px; /* Adjust for smaller screens */
+    right: 55px; /* Adjust for smaller screens */
+    padding: 5px; /* Slightly smaller padding */
   }
 }
 
-  
+@media (max-width: 400px) {
+  .delete-icon {
+    top: 45px; /* Further adjust for tiny screens */
+    right: 65px; /* Further adjust for tiny screens */
+    padding: 4px; /* Even smaller padding */
+  }
+}
+.category-title {
+  font-family:Arial, Helvetica, sans-serif cursive;
+  font-size: 35px;
+  color: #aea1a1;
+  margin-bottom: 50px;
+}
+/* ----------------- DECORATIVE ELEMENTS ----------------- */
+.hp {
+  position: absolute;
+  top: 0px;
+  right: -5%;
+  width: 410px;
+  height: 460px;
+  background: url('/elements/hp.png') no-repeat center/contain;
+ 
+  z-index: 5;
+}
+.hp3 {
+  position: absolute;
+  top: -120px;
+  right: 80%;
+  width: 250px;
+  height: 600px;
+  background: url('/elements/hp3.png') no-repeat center/contain;
+ 
+  z-index: 5;
+}
+.e {
+  position: absolute;
+  top: -220px;
+  right: 60%;
+  width: 250px;
+  height: 600px;
+  background: url('/elements/e.png') no-repeat center/contain;
+ 
+  z-index: 5;
+}
+.e1 {
+  position: absolute;
+  top: -220px;
+  right: 23%;
+  width: 250px;
+  height: 600px;
+  background: url('/elements/e1.png') no-repeat center/contain;
+ 
+  z-index: 5;
+}
+.sleeping-cat {
+  position: absolute;
+  top: 120px;
+  left: 10%;
+  width: 120px;
+  height: 120px;
+  background: url('/assets/sleeping-cat.png') no-repeat center/contain;
+  z-index: 5;
+}
+
+.potted-plant {
+  position: absolute;
+  top: 720px;
+  right: 52%;
+  width: 150px;
+  height: 190px;
+  background: url('/elements/p.png') no-repeat center/contain;
+  z-index: 4;
+}
+.p1 {
+  position: absolute;
+  top: 660px;
+  right: 86%;
+  width: 380px;
+  height: 290px;
+  background: url('/elements/p1.png') no-repeat center/contain;
+  z-index: 4;
+}
+
+.hanging-leafs {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  width: 250px;
+  height: 250px;
+  background: url('/assets/hanging-leafs.png') no-repeat center/contain;
+  z-index: 1;
+  opacity: 0.8;
+}
+
+.lit-candle {
+  position: absolute;
+  top: 415px;
+  left: 6.5%;
+  width: 50px;
+  height: 60px;
+  background: url('/elements/c3-1.png') no-repeat center/contain;
+
+  z-index: 4;
+
+}
+.candle {
+  position: absolute;
+  top: 375px;
+  left: 2.3%;
+  width: 80px;
+  height: 100px;
+  background: url('/elements/c3-1.png') no-repeat center/contain;
+
+  z-index: 4;
+}
+
+
+.magic {
+  position: absolute;
+  bottom: 60px;
+  right: 20%;
+  width: 50px;
+  height: 50px;
+  background: url('/assets/magical-book.png') no-repeat center/contain;
+  animation: hover 3s ease-in-out infinite;
+  z-index: 4;
+}
+
+/* ----------------- ANIMATIONS ----------------- */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes flicker {
+  0%, 100% { transform: scaleY(1); opacity: 1; }
+  50% { transform: scaleY(0.95); opacity: 0.8; }
+}
+
+@keyframes hover {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0px); }
+}
