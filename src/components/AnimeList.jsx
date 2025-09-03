@@ -1,41 +1,46 @@
-// src/utils/safeFilter.js
+import { useState, useEffect } from "react";
+import axios from "axios";
 
-export const isSafeContent = (item, type = "anime") => {
-  // Rules per content type
-  const rules = {
-    anime: {
-      bannedRatings: ["Rx", "R+"],
-      bannedGenres: [9, 12, 49, 50], // hentai, ecchi, etc
-    },
-    movies: {
-      bannedRatings: ["NC-17", "X"],
-      bannedGenres: ["Adult", "Erotica"], 
-    },
-    series: {
-      bannedRatings: ["NC-17", "X"],
-      bannedGenres: ["Adult", "Erotica"],
-    },
-    books: {
-      bannedGenres: ["Erotica", "Adult"],
-    },
-  };
+const AnimeList = () => {
+  const [anime, setAnime] = useState([]);
+  const [query, setQuery] = useState("One Piece"); // Default search
 
-  const r = rules[type] || {};
+  useEffect(() => {
+    const fetchAnime = async () => {
+      try {
+        const response = await axios.get(
+          `https://api.jikan.moe/v4/anime?q=${query}&limit=10`
+        );
+        setAnime(response.data.data); // Store anime results
+      } catch (error) {
+        console.error("Error fetching anime:", error);
+      }
+    };
 
-  // ✅ Rating filter
-  const safeRating = r.bannedRatings
-    ? !r.bannedRatings.some((br) => (item.rating || "").includes(br))
-    : true;
+    fetchAnime();
+  }, [query]); // Fetch data when query changes
 
-  // ✅ Genre filter
-  const safeGenre = r.bannedGenres
-    ? !item.genres?.some(
-        (g) =>
-          typeof g === "string"
-            ? r.bannedGenres.includes(g)
-            : r.bannedGenres.includes(g.mal_id)
-      )
-    : true;
-
-  return safeRating && safeGenre;
+  return (
+    <div>
+      <h2>Search Anime</h2>
+      <input
+        type="text"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        placeholder="Search for anime..."
+      />
+      <div className="anime-grid">
+        {anime.map((item) => (
+          <div key={item.mal_id} className="anime-card">
+            <img src={item.images.jpg.image_url} alt={item.title} />
+            <h3>{item.title}</h3>
+            <p><strong>Episodes:</strong> {item.episodes || "Unknown"}</p>
+            <p><strong>Score:</strong> {item.score}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 };
+
+export default AnimeList;

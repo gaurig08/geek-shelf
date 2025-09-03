@@ -81,7 +81,7 @@ const Login = () => {
        <div className="or-separator">OR</div>
 
         <div className="google-btn" onClick={handleGoogleLogin}>
-        <img src="public/google.svg" alt="Google" />
+        <img src="/google.webp" alt="Google" />
         </div>
 
         {error && <p className="auth-error">{error}</p>}
