@@ -34,4 +34,4 @@ With a serene, forest-inspired aesthetic, floating fireflies, glowing spirit ani
 You can view the hosted version here:  
 🔗[Geek Shelf on Vercel](https://geek-shelf.vercel.app/)   
 <br>
-*Access is restricted via an email whitelist — contact the developer for access.*
+
