@@ -5,13 +5,15 @@ const MovieList = () => {
 
   useEffect(() => {
     const fetchMovies = async () => {
-      const response = await fetch(
-        `https://api.themoviedb.org/3/search/movie?api_key=${import.meta.env.VITE_TMDB_API_KEY}&query=Inception`
-      );
-      const data = await response.json();
-      console.log("API Key:", import.meta.env.VITE_TMDB_API_KEY);
+      try {
+        // ✅ Call your backend API route instead of TMDB directly
+        const response = await fetch(`/api/tmdb?path=/search/movie&query=Inception`);
+        const data = await response.json();
 
-      setMovies(data.results); // Store the fetched movies
+        setMovies(data.results || []);
+      } catch (error) {
+        console.error("Error fetching movies:", error);
+      }
     };
 
     fetchMovies();
@@ -34,7 +36,10 @@ const MovieList = () => {
               )}
               <h3>{movie.title}</h3>
               <p>{movie.overview || "No description available."}</p>
-              <p><strong>Release Date:</strong> {movie.release_date || "Unknown"}</p>
+              <p>
+                <strong>Release Date:</strong>{" "}
+                {movie.release_date || "Unknown"}
+              </p>
             </div>
           ))
         ) : (
@@ -44,6 +49,6 @@ const MovieList = () => {
     </div>
   );
 };
-  
 
 export default MovieList;
+

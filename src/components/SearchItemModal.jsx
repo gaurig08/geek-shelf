@@ -20,27 +20,25 @@ const SearchItemModal = ({ itemId, category, onClose }) => {
           data = await response.json();
           setItem(data.data);
           break;
+
         case "Movies":
-          response = await fetch(
-            `https://api.themoviedb.org/3/movie/${itemId}?api_key=${import.meta.env.VITE_TMDB_API_KEY}`
-          );
+          response = await fetch(`/api/tmdb?path=/movie/${itemId}`);
           data = await response.json();
           setItem(data);
           break;
+
         case "Series":
-          response = await fetch(
-            `https://api.themoviedb.org/3/tv/${itemId}?api_key=${import.meta.env.VITE_TMDB_API_KEY}`
-          );
+          response = await fetch(`/api/tmdb?path=/tv/${itemId}`);
           data = await response.json();
           setItem(data);
           break;
+
         case "Book":
-          response = await fetch(
-            `https://www.googleapis.com/books/v1/volumes/${itemId}?key=${import.meta.env.VITE_GOOGLE_BOOKS_API_KEY}`
-          );
+          response = await fetch(`/api/books?path=/volumes/${itemId}`);
           data = await response.json();
           setItem(data.volumeInfo);
           break;
+
         default:
           throw new Error("Unknown category.");
       }
@@ -70,8 +68,10 @@ const SearchItemModal = ({ itemId, category, onClose }) => {
     image = item.imageLinks.thumbnail;
   }
 
-  const title = item.title || item.name || item.title_english || item.title_original || "Untitled";
-  const summary = item.synopsis || item.description || item.overview || "No summary available.";
+  const title =
+    item.title || item.name || item.title_english || item.title_original || "Untitled";
+  const summary =
+    item.synopsis || item.description || item.overview || "No summary available.";
   const genres = item.genres?.map((g) => g.name || g).join(", ") || "N/A";
 
   return (
@@ -79,7 +79,7 @@ const SearchItemModal = ({ itemId, category, onClose }) => {
       <div className="modal" onClick={(e) => e.stopPropagation()}>
         <button className="close-button" onClick={onClose}>×</button>
         <div className="poster-container">
-        <img src={image} alt={title} className="modal-poster" />
+          <img src={image} alt={title} className="modal-poster" />
         </div>
         <div className="modal-details">
           <h2>{title}</h2>
@@ -99,5 +99,4 @@ SearchItemModal.propTypes = {
 };
 
 export default SearchItemModal;
-
 
