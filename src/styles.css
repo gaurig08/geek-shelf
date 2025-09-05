@@ -62,7 +62,7 @@ body::-webkit-scrollbar {
     display: flex;
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: white;
+    background: rgb(18, 18, 18);
     justify-content: center;
     align-items: center;
     z-index: 999999;
