@@ -4,6 +4,12 @@ import { useAudio } from "../utils/AudioContext";
 const AudioToggle = () => {
   const { isPlaying, toggleAudio } = useAudio();
 
+  // Detect if the user is on a mobile device
+  const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+  // 🚫 Don’t render anything on mobile
+  if (isMobile) return null;
+
   return (
     <button
       onClick={toggleAudio}
@@ -26,5 +32,3 @@ const AudioToggle = () => {
 };
 
 export default AudioToggle;
-
-

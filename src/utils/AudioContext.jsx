@@ -7,7 +7,15 @@ export const AudioProvider = ({ children }) => {
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
+  // Detect mobile device
+  const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
   useEffect(() => {
+    if (isMobile) {
+      // 🚫 Disable audio completely on mobile
+      return;
+    }
+
     audioRef.current = new Audio(ambientAudio);
     audioRef.current.loop = true;
     audioRef.current.volume = 0.5;
@@ -19,20 +27,23 @@ export const AudioProvider = ({ children }) => {
     };
 
     // Try autoplay
-    audioRef.current.play().then(() => {
-      setIsPlaying(true);
-    }).catch(() => {
-      // Autoplay blocked, wait for interaction
-      document.addEventListener("click", playOnFirstClick);
-    });
+    audioRef.current
+      .play()
+      .then(() => {
+        setIsPlaying(true);
+      })
+      .catch(() => {
+        // Autoplay blocked, wait for interaction
+        document.addEventListener("click", playOnFirstClick);
+      });
 
     return () => {
-      audioRef.current.pause();
+      audioRef.current?.pause();
     };
-  }, []);
+  }, [isMobile]);
 
   const toggleAudio = () => {
-    if (!audioRef.current) return;
+    if (!audioRef.current || isMobile) return;
 
     if (isPlaying) {
       audioRef.current.pause();
@@ -51,3 +62,4 @@ export const AudioProvider = ({ children }) => {
 };
 
 export const useAudio = () => useContext(AudioContext);
+

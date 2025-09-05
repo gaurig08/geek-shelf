@@ -19,78 +19,107 @@ import { AudioProvider } from "./utils/AudioContext";
 
 const App = () => {
   const location = useLocation();
-  const isAuthPage = location.pathname === "/login" || location.pathname === "/signup";
+  const isAuthPage =
+    location.pathname === "/login" || location.pathname === "/signup";
 
   return (
     <AuthProvider>
-       <AudioProvider>
-        {/* 🚫 Mobile Blocker */}
-        <div className="mobile-blocker">
-          🚫 This app is not available on mobile.  
-          Please open it on a laptop/desktop.
-        </div>
-        
-      {!isAuthPage && (
-        <>
-          <FirefliesCanvas />
-          <AudioToggle />
-          <NavBar />
-        </>
-      )}
+      <AudioProvider>
+        {/* 🚫 Mobile Blocker Overlay */}
+        {!isAuthPage && (
+          <div className="mobile-blocker">
+            🚫 This app is not available on mobile.
+            <br />
+            Please open it on a laptop or desktop browser.
+          </div>
+        )}
 
-      <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          {/* Public Routes */}
-          <Route path="/signup" element={<PageTransition><Signup /></PageTransition>} />
-          <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
+        {!isAuthPage && (
+          <>
+            <FirefliesCanvas />
+            <AudioToggle />
+            <NavBar />
+          </>
+        )}
 
-          {/* Protected Routes */}
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <PageTransition><HomePage /></PageTransition>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/search"
-            element={
-              <ProtectedRoute>
-                <PageTransition><SearchPage /></PageTransition>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/shelf"
-            element={
-              <ProtectedRoute>
-                <PageTransition><ShelfPage /></PageTransition>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/shelf/:category"
-            element={
-              <ProtectedRoute>
-                <PageTransition><CategoryListPage /></PageTransition>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/shelf/item/:itemId"
-            element={
-              <ProtectedRoute>
-                <PageTransition><ShelfItemDetailPage /></PageTransition>
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
-      </AnimatePresence>
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname}>
+            {/* Public Routes */}
+            <Route
+              path="/signup"
+              element={
+                <PageTransition>
+                  <Signup />
+                </PageTransition>
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                <PageTransition>
+                  <Login />
+                </PageTransition>
+              }
+            />
+
+            {/* Protected Routes */}
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <PageTransition>
+                    <HomePage />
+                  </PageTransition>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/search"
+              element={
+                <ProtectedRoute>
+                  <PageTransition>
+                    <SearchPage />
+                  </PageTransition>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/shelf"
+              element={
+                <ProtectedRoute>
+                  <PageTransition>
+                    <ShelfPage />
+                  </PageTransition>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/shelf/:category"
+              element={
+                <ProtectedRoute>
+                  <PageTransition>
+                    <CategoryListPage />
+                  </PageTransition>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/shelf/item/:itemId"
+              element={
+                <ProtectedRoute>
+                  <PageTransition>
+                    <ShelfItemDetailPage />
+                  </PageTransition>
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </AnimatePresence>
       </AudioProvider>
     </AuthProvider>
   );
 };
 
 export default App;
+
 
