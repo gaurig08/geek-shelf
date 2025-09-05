@@ -24,26 +24,20 @@ const SearchPage = () => {
 
       switch (category) {
         case "Series":
-          response = await fetch(
-            `https://api.themoviedb.org/3/search/tv?api_key=${import.meta.env.VITE_TMDB_API_KEY}&query=${query}`
-          );
+          response = await fetch(`/api/tmdb?path=/search/tv&query=${query}`);
           data = await response.json();
           setResults((data.results || []).filter((series) => isSafeContent(series, "series")));
           break;
 
         case "Movie":
         case "Movies":
-          response = await fetch(
-            `https://api.themoviedb.org/3/search/movie?api_key=${import.meta.env.VITE_TMDB_API_KEY}&query=${query}`
-          );
+          response = await fetch(`/api/tmdb?path=/search/movie&query=${query}`);
           data = await response.json();
           setResults((data.results || []).filter((movie) => isSafeContent(movie, "movie")));
           break;
 
         case "Book":
-          response = await fetch(
-            `https://www.googleapis.com/books/v1/volumes?q=${query}&key=${import.meta.env.VITE_GOOGLE_BOOKS_API_KEY}`
-          );
+          response = await fetch(`/api/books?path=/volumes&q=${query}`);
           data = await response.json();
           setResults((data.items || []).filter((book) => isSafeContent(book, "book")));
           break;

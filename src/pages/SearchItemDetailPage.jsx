@@ -16,13 +16,13 @@ const SearchItemDetailPage = () => {
       const categoryLower = category?.toLowerCase();
 
       if (categoryLower === "movie") {
-        url = `https://api.themoviedb.org/3/movie/${itemId}?api_key=${import.meta.env.VITE_TMDB_API_KEY}&language=en-US`;
+        url = `/api/tmdb?path=/movie/${itemId}`;
       } else if (categoryLower === "series") {
-        url = `https://api.themoviedb.org/3/tv/${itemId}?api_key=${import.meta.env.VITE_TMDB_API_KEY}&language=en-US`;
+        url = `/api/tmdb?path=/tv/${itemId}`;
       } else if (categoryLower === "anime") {
-        url = `https://api.jikan.moe/v4/anime/${itemId}`;
+        url = `https://api.jikan.moe/v4/anime/${itemId}`; // safe, no key needed
       } else if (categoryLower === "book") {
-        url = `https://www.googleapis.com/books/v1/volumes/${itemId}?key=${import.meta.env.VITE_GOOGLE_BOOKS_API_KEY}`;
+        url = `/api/books?path=/volumes/${itemId}`;
       } else {
         throw new Error("Unknown category.");
       }
