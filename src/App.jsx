@@ -24,6 +24,12 @@ const App = () => {
   return (
     <AuthProvider>
        <AudioProvider>
+        {/* 🚫 Mobile Blocker */}
+        <div className="mobile-blocker">
+          🚫 This app is not available on mobile.  
+          Please open it on a laptop/desktop.
+        </div>
+        
       {!isAuthPage && (
         <>
           <FirefliesCanvas />
