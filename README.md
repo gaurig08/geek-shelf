@@ -55,7 +55,7 @@ A full-stack media tracking web app where users can search, add, and organize th
 <br>
 
 ## 🌐View the Project
-You can view the hosted version here:  
+Live Project Link:  
 🔗[Geek Shelf on Vercel](https://geek-shelf.vercel.app/)   
 <br>
 
