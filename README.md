@@ -1,4 +1,4 @@
-# 📚 Geek Shelf 
+# 📚 GeekShelf 
 A full-stack media tracking web app where users can search, add, and organize their favorite books, movies, and anime in one place. Built with React.js, Firebase (Auth + Firestore), and Vercel serverless functions for API integration.
 
 
@@ -56,7 +56,7 @@ A full-stack media tracking web app where users can search, add, and organize th
 
 ## 🌐View the Project
 Live Project Link:  
-🔗[Geek Shelf on Vercel](https://geek-shelf.vercel.app/)   
+🔗[GeekShelf on Vercel](https://geek-shelf.vercel.app/)   
 <br>
 
 ## 🏗️ Setup & Installation
