@@ -1,51 +1,203 @@
-.home-container {
+/* ─── Room Container ─────────────────────────────────────── */
+.room-container {
   position: relative;
-  z-index: 0;
-  background-image: url("/bg/w1.webp");
-  background-size: cover;
-  background-position: center;
-  min-height: 100vh; /* Ensure the container takes up at least the viewport height */
-  color: white;
-  font-family: 'Segoe UI', sans-serif;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 20px; /* Ensure there's some padding on smaller screens */
-  box-sizing: border-box; /* Prevents content from overflowing */
-  overflow: auto; /* Enable scrolling if content overflows */
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  /* Remove any page margin so it fills the viewport edge-to-edge */
+  display: block;
 }
 
-.overlay {
-  text-align: center;
+/* ─── Background Image ───────────────────────────────────── */
+.room-bg {
   position: absolute;
-  top: 80%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* ─── Firefly keyframes ──────────────────────────────────── */
+@keyframes firefly-1 {
+  0%   { transform: translate(10%, 80%) scale(0.6); opacity: 0; }
+  20%  { opacity: 1; }
+  50%  { transform: translate(80%, 20%) scale(1); }
+  80%  { opacity: 0.8; }
+  100% { transform: translate(30%, 90%) scale(0.5); opacity: 0; }
+}
+@keyframes firefly-2 {
+  0%   { transform: translate(70%, 10%) scale(0.8); opacity: 0; }
+  25%  { opacity: 1; }
+  60%  { transform: translate(10%, 60%) scale(1.1); }
+  85%  { opacity: 0.7; }
+  100% { transform: translate(60%, 5%)  scale(0.6); opacity: 0; }
+}
+@keyframes firefly-3 {
+  0%   { transform: translate(50%, 50%) scale(0.5); opacity: 0; }
+  30%  { opacity: 1; }
+  55%  { transform: translate(20%, 10%) scale(0.9); }
+  90%  { opacity: 0.9; }
+  100% { transform: translate(75%, 70%) scale(0.6); opacity: 0; }
+}
+@keyframes firefly-4 {
+  0%   { transform: translate(20%, 30%) scale(0.7); opacity: 0; }
+  35%  { opacity: 1; }
+  65%  { transform: translate(85%, 75%) scale(1); }
+  88%  { opacity: 0.6; }
+  100% { transform: translate(15%, 15%) scale(0.5); opacity: 0; }
+}
+
+/* ─── Hotspot base ───────────────────────────────────────── */
+.hotspot {
+  position: absolute;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  outline: none;
+  /* overflow visible so fireflies can drift outside the hit area */
+  overflow: visible;
+}
+
+/* Fireflies via ::before and ::after — two dots each */
+.hotspot::before,
+.hotspot::after {
+  content: "";
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 0%;
+  background: radial-gradient(circle, #ffe87a 0%, #ffb830 60%, transparent 100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Two more fireflies using box-shadow dots on ::before */
+.hotspot:hover::before,
+.hotspot:focus-visible::before {
+  animation: firefly-1 2.4s ease-in-out infinite;
+  /* extra dots via box-shadow */
+  box-shadow:
+    18px -12px 0 1px #ffe070,
+    -10px  20px 0 0px #ffd04a;
+}
+.hotspot:hover::after,
+.hotspot:focus-visible::after {
+  animation: firefly-2 3s ease-in-out infinite 0.6s;
+  box-shadow:
+    -20px -8px 0 1px #ffe87a,
+     14px 18px 0 0px #ffb830;
+}
+
+/* Stagger two more unique paths per hotspot id */
+.hotspot-shelf:hover::before     { animation-name: firefly-3; animation-duration: 2.8s; }
+.hotspot-movies:hover::after     { animation-name: firefly-4; animation-duration: 3.2s; animation-delay: 0.3s; }
+.hotspot-series:hover::before    { animation-name: firefly-2; animation-duration: 2.6s; }
+.hotspot-anime:hover::after      { animation-name: firefly-3; animation-duration: 2.9s; animation-delay: 0.9s; }
+.hotspot-search:hover::before    { animation-name: firefly-4; animation-duration: 2.5s; }
+
+/* ─── Tooltip label ──────────────────────────────────────── */
+.hotspot-label {
+  position: absolute;
+  bottom: calc(100% + 8px);
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
+  background: rgba(28, 14, 4, 0.88);
+  color: #eef9ff;
+  font-family: "Ruge Boogie", cursive;
+  font-size: 22px;
+  letter-spacing: 0.08em;
+  padding: 5px 13px;
+  border-radius: 20px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  border: 1px solid rgba(23, 23, 23, 0.45);
+  transition: opacity 0.18s ease;
+  /* Keep tooltip inside room if hotspot is at top edge */
+  z-index: 10;
 }
 
-.cozy-title {
-  font-size: 3rem;
-  margin-bottom: 10px;
-  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
+.hotspot:hover .hotspot-label,
+.hotspot:focus-visible .hotspot-label {
+  opacity: 1;
 }
 
-.cozy-subtitle {
-  font-size: 1.2rem;
-  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
-}
-
-/* Make sure the text content is responsive on smaller screens */
-@media (max-width: 768px) {
-  .cozy-title {
-    font-size: 2.2rem; /* Adjust title font size for small screens */
+/* ─── Responsive — Tablet (900px and below) ──────────────── */
+@media (max-width: 900px) {
+  .room-container {
+    aspect-ratio: 16 / 9;
   }
 
-  .cozy-subtitle {
-    font-size: 1rem; /* Adjust subtitle font size for small screens */
+  .hotspot-label {
+    font-size: 11px;
+    padding: 4px 10px;
   }
-  
-  .overlay {
-    top: 70%; /* Adjust overlay position on smaller screens */
+}
+
+/* ─── Responsive — Mobile (600px and below) ─────────────── */
+@media (max-width: 600px) {
+
+
+  .room-bg {
+
+    content: url('/room/room-mobile.png');
+    object-fit: cover;
+    object-position: top;  
+  }
+  .room-container {
+    
+    aspect-ratio: unset;
+    min-height: 100svh;         /* fill full screen height */
+    height: 100svh;
+  }
+
+  /* Enlarge hotspot hit areas for fingers */
+  .hotspot {
+    border-radius: 10px;
+  }
+
+ 
+  .hotspot-shelf {
+    left: 39% !important;
+    top: 21% !important;
+    width: 26.4% !important;
+    height: 7% !important;
+  }
+
+  .hotspot-movies {
+    left: 75.9% !important;
+    top: 18.2% !important;
+    width: 24% !important;
+    height: 15.8% !important;
+  }
+
+  .hotspot-series {
+    left: 51.5% !important;
+    top: 47% !important;
+    width: 23% !important;
+    height: 8% !important;
+  }
+
+  .hotspot-anime {
+    left: 5.6% !important;
+    top: 58.9% !important;
+    width: 11.9% !important;
+    height: 10% !important;
+  }
+
+  .hotspot-search {
+    left: 13.6% !important;
+    top: 67% !important;
+    width: 11% !important;
+    height: 6% !important;
+  }
+
+  .hotspot-label {
+    font-size: 14px;
+    padding: 3px 8px;
   }
 }

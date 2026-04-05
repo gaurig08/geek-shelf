@@ -1,104 +1,225 @@
+/* NavBar.css */
+@import url('https://fonts.googleapis.com/css2?family=Ruge+Boogie&display=swap');
+
+/* ── WRAPPER ────────────────────────────────────────────────────────────────── */
 .nav-wrapper {
   display: flex;
   align-items: center;
-  padding: 20px;
+  padding: 16px 24px;
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1000;
+  z-index: 100;
   width: 100%;
+  background-color: #97767b00;
+  /* Subtle frosted glass so it reads over any background */
+  
+  
 }
 
+/* ── HAMBURGER ──────────────────────────────────────────────────────────────── */
 .nav-toggle {
   cursor: pointer;
-  color: white;
+  color: #d0607c;
   background: transparent;
   border: none;
-  margin-right: 20px;
+  padding: 8px;
+  margin-right: 18px;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s ease, filter 0.2s ease;
+  /* Glow on hover */
+  filter: drop-shadow(0 0 1px #943049);
+  flex-shrink: 0;
 }
 
+.nav-toggle:hover {
+  color: #ee96ac;
+  filter: drop-shadow(0 0 2px #f087aab4);
+}
+
+/* ── NAV LINKS ──────────────────────────────────────────────────────────────── */
 .nav-links {
-  display: none;
+  display: flex;
   list-style: none;
-  gap: 30px;
+  gap: 2rem;
   margin: 0;
   padding: 0;
-  flex-direction: row;
-}
-
-.nav-links.open {
-  display: flex;
-}
-
-.nav-links li a {
-  color: white;
-  text-decoration: none;
-  font-size: 16px;
-  font-weight: 500;
-  transition: color 0.3s;
-}
-
-.nav-links li a:hover {
-  color: gold;
-}
-.nav-links {
+  font-family: 'Ruge Boogie', cursive;
+  font-size: 1.5rem;
+  letter-spacing: 0.06em;
+  align-items: center;
+  /* Hidden by default — shown when .open */
   opacity: 0;
-  transition: opacity 0.4s ease-in;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
 }
 
 .nav-links.open {
   opacity: 1;
+  pointer-events: all;
 }
+
+.nav-links li a {
+  color: #d0607c;
+  text-decoration: none;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+  white-space: nowrap;
+}
+
+.nav-links li a:hover {
+  color: #f196ad;
+  text-shadow: 0 0 12px rgba(255, 143, 171, 0.6);
+}
+
+/* ── SHELF DROPDOWN TRIGGER ─────────────────────────────────────────────────── */
+.shelf-nav-item {
+  position: relative;
+}
+
+.shelf-nav-btn {
+  background: none;
+  border: none;
+  font-family: 'Ruge Boogie', cursive;
+  font-size: 1.5rem;
+  letter-spacing: 0.06em;
+  color: #d0607c;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+  white-space: nowrap;
+}
+
+.shelf-nav-btn:hover {
+  color: #ffacc1;
+  text-shadow: 0 0 12px rgba(255, 143, 171, 0.6);
+}
+
+.chevron {
+  font-size: 1rem;
+  display: inline-block;
+  transition: transform 0.2s ease;
+  color: #ad4d65;
+  line-height: 1;
+}
+
+.chevron.up {
+  transform: rotate(180deg);
+}
+
+/* ── SHELF DROPDOWN ─────────────────────────────────────────────────────────── */
+.shelf-dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 50%;
+  
+  background: rgba(25, 8, 15, 0.92);
+  border: 1px solid rgba(255, 143, 171, 0.25);
+  border-radius: 16px;
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 160px;
+  backdrop-filter: blur(12px);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 0 24px rgba(255, 186, 203, 0.08);
+  z-index: 100;
+  /* Fade in */
+  animation: dropIn 0.18s ease;
+}
+
+
+
+.shelf-dropdown-item {
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+  font-size: 1rem;
+  color: #ffb3c6;
+  text-decoration: none;
+  padding: 9px 16px;
+  border-radius: 10px;
+  transition: background 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+}
+
+.shelf-dropdown-item:hover {
+  background: rgba(255, 143, 171, 0.15);
+  color: #ffd6e0;
+  text-shadow: 0 0 8px rgba(255, 143, 171, 0.4);
+}
+
+/* ── PROFILE ICON ───────────────────────────────────────────────────────────── */
 .profile-icon {
   margin-left: auto;
-  margin-right: 1rem;
+  margin-right: 4px;
   cursor: pointer;
-  color: white;
-  position: absolute;
-  right: 10px;
-  top: 12px;
-}
-/* Category-specific navbar styles */
-.category-navbar .nav-wrapper {
-    display: flex;
+  color: #d0607c;
+  display: flex;
   align-items: center;
-  padding: 20px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-  width: 100%;
+  transition: color 0.2s ease, filter 0.2s ease;
+  filter: drop-shadow(0 0 1px #943049);
+  flex-shrink: 0;
 }
 
-.category-navbar .nav-toggle {
-  color: rgb(238, 222, 222); /* White color for the toggle button */
-  cursor: pointer;
-
-  background: transparent;
-  border: none;
-  margin-right: 20px;
-
+.profile-icon:hover {
+  color: #febccc;
+  filter: drop-shadow(0 0 2px #fc8ca8);
 }
 
-.category-navbar .nav-links li a {
-  color: rgb(239, 237, 237);
-  font-family: 'Garamond' , serif;
-  font-size: 16px;
-  font-weight: bold;
-  text-decoration: none;
-  transition: color 0.3s;
+/* ── CATEGORY PAGE OVERRIDES ────────────────────────────────────────────────── */
+/* No changes needed — category-navbar inherits everything above */
+.category-navbar {
+  padding: 20px 28px;
 }
 
-.category-navbar .nav-links li a:hover {
-  color: #ffcc00; /* Gold color on hover */
+/* ── RESPONSIVE ─────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .nav-links {
+    font-size: 1rem;
+    gap: 1.4rem;
+  }
+
+
+  .shelf-nav-btn {
+    font-size: 1rem;
+  }
+
+  /* On mobile, dropdown goes below the link row */
+  .shelf-dropdown {
+    left: 0;
+    transform: none;
+  }
+
+  @keyframes dropIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 }
 
-.category-navbar .profile-icon {
-  color: rgb(255, 255, 255); /* White color for the profile icon */
-  margin-left: auto;
-  margin-right: 1rem;
-  cursor: pointer;
-  position: absolute;
-  right: 10px;
-  top: 12px;
+@media (max-width: 480px) {
+  .nav-wrapper {
+    padding: 14px 16px;
+  }
+
+  .nav-links {
+    font-size: 1.5rem;
+    gap: 1.1rem;
+  }
+
+  .shelf-nav-btn {
+    font-size: 1.5rem;
+  }
+
+  .shelf-dropdown {
+    min-width: 140px;
+  }
+
+  .shelf-dropdown-item {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+  }
 }

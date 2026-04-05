@@ -1,113 +1,169 @@
-import { useState } from "react";
+// src/pages/SearchPage.jsx
+import { useState, useEffect, useRef, useCallback } from "react";
 import SearchBar from "../components/SearchBar";
 import SearchResults from "../components/SearchResults";
 import SearchItemModal from "../components/SearchItemModal";
-import SpiritOrb from "../components/SpiritOrb";
-import SpiritOrb1 from "../components/SpiritOrb1";
-import GlowingSpiritAnimal from "../components/GlowingSpiritAnimal";
-import Cat from "../components/Cat";
-
 import { fetchSafeAnime } from "../utils/fetchSafeAnime";
-import { isSafeContent } from "../utils/safeFilter"; // ✅ add this
-
+import { isSafeContent } from "../utils/safeFilter";
 import "./SearchPage.css";
 
+const searchCache = new Map();
+
 const SearchPage = () => {
-  const [category, setCategory] = useState("Movies");
-  const [results, setResults] = useState([]);
+  const [category, setCategory]           = useState("Movie");
+  const [results, setResults]             = useState([]);
   const [selectedItemId, setSelectedItemId] = useState(null);
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal]         = useState(false);
+  const [loading, setLoading]             = useState(false);
+  const [error, setError]                 = useState("");
+  const [query, setQuery]                 = useState("");
 
-  const fetchResults = async (query) => {
-    try {
-      let response, data;
+  const debounceRef = useRef(null);
+  const abortRef    = useRef(null);
 
-      switch (category) {
-        case "Series":
-          response = await fetch(`/api/tmdb?path=/search/tv&query=${query}`);
-          data = await response.json();
-          setResults((data.results || []).filter((series) => isSafeContent(series, "series")));
-          break;
+  const fetchResults = useCallback(async (q) => {
+    if (!q.trim()) { setResults([]); return; }
 
-        case "Movie":
-        case "Movies":
-          response = await fetch(`/api/tmdb?path=/search/movie&query=${query}`);
-          data = await response.json();
-          setResults((data.results || []).filter((movie) => isSafeContent(movie, "movie")));
-          break;
-
-        case "Book":
-          response = await fetch(`/api/books?path=/volumes&q=${query}`);
-          data = await response.json();
-          setResults((data.items || []).filter((book) => isSafeContent(book, "book")));
-          break;
-
-        case "Anime":
-          const safeAnime = await fetchSafeAnime(query);
-          setResults(safeAnime);
-          break;
-
-        default:
-          setResults([]);
-      }
-    } catch (error) {
-      console.error(`Error fetching ${category}:`, error);
+    const cacheKey = `${category}:${q.toLowerCase().trim()}`;
+    if (searchCache.has(cacheKey)) {
+      setResults(searchCache.get(cacheKey));
+      setLoading(false);
+      return;
     }
-  };
 
-  const handleInfoClick = (id, category) => {
-    setSelectedItemId(id);
-    setShowModal(true);
-  };
+    if (abortRef.current) abortRef.current.abort();
+    abortRef.current = new AbortController();
+    const { signal } = abortRef.current;
+
+    setLoading(true);
+    setError("");
+
+    try {
+      let filtered = [];
+
+      if (category === "Series") {
+        const res  = await fetch(`/api/tmdb?path=/search/tv&query=${encodeURIComponent(q)}`, { signal });
+        const data = await res.json();
+        filtered   = (data.results || []).filter(s => isSafeContent(s, "series"));
+
+      } else if (category === "Movie" || category === "Movies") {
+        const res  = await fetch(`/api/tmdb?path=/search/movie&query=${encodeURIComponent(q)}`, { signal });
+        const data = await res.json();
+        filtered   = (data.results || []).filter(m => isSafeContent(m, "movie"));
+
+      } else if (category === "Book") {
+        const res  = await fetch(`/api/books?path=/volumes&q=${encodeURIComponent(q)}`, { signal });
+        const data = await res.json();
+        filtered   = (data.items || []).filter(b => isSafeContent(b, "book"));
+
+      } else if (category === "Anime") {
+        filtered = await fetchSafeAnime(q);
+      }
+
+      searchCache.set(cacheKey, filtered);
+      setResults(filtered);
+
+    } catch (err) {
+      if (err.name === "AbortError") return;
+      console.error(err);
+      setError("Search failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }, [category]);
+
+  const handleSearch = useCallback((q) => {
+    setQuery(q);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => fetchResults(q), 400);
+  }, [fetchResults]);
+
+  // Re-run search when category changes if there's already a query
+  useEffect(() => {
+    setResults([]);
+    setError("");
+    if (query.trim()) fetchResults(query);
+  }, [category]);
+
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+      if (abortRef.current)    abortRef.current.abort();
+    };
+  }, []);
+
+  const CATEGORIES = ["Movie", "Series", "Book", "Anime"];
+  const LABELS     = { Movie: "Movies", Series: "Series", Book: "Books", Anime: "Anime" };
 
   return (
-    <>
-      <div className="background-layer" />
+    <div className="search-page">
 
-      <div className={`search-page-wrapper ${category.toLowerCase()}-bg`}>
-        <div className="spirit-animal-container">
-          <div className="spirit-orb-wrapper">
-            <SpiritOrb />
-            <SpiritOrb1 />
-          </div>
-          <div className="glowing-animal-wrapper">
-            <GlowingSpiritAnimal />
-          </div>
-          <div className="cat-wrapper">
-            <Cat />
-          </div>
+      {/* Background — drop your wallpaper image path here */}
+      <div className="search-bg" />
+
+      {/* Dark overlay so text is always readable over any wallpaper */}
+      <div className="search-overlay" />
+
+      <div className="search-inner">
+
+        {/* Header */}
+        <div className="search-header">
+          <h1 className="search-title">Find Your Next Obsession</h1>
+          <p className="search-subtitle">Search across books, movies, series and anime</p>
         </div>
 
-        <div style={{ height: "70px" }}></div>
+        {/* Category tabs */}
+        <div className="category-tabs">
+          {CATEGORIES.map(cat => (
+            <button
+              key={cat}
+              className={`cat-tab ${category === cat ? "active" : ""}`}
+              onClick={() => setCategory(cat)}
+            >
+              {LABELS[cat]}
+            </button>
+          ))}
+        </div>
 
-        <div className="search-page-content">
-          <div className="category-filter">
-            <label>Filter by:</label>
-            <select value={category} onChange={(e) => setCategory(e.target.value)}>
-              <option value="Movie">Movies</option>
-              <option value="Series">Series</option>
-              <option value="Book">Books</option>
-              <option value="Anime">Anime</option>
-            </select>
+        {/* Search bar */}
+        <SearchBar onSearch={handleSearch} category={category} />
+
+        {/* States */}
+        {loading && (
+          <div className="search-loading">
+            <span className="spinner" />
+            <span>Searching {LABELS[category]}...</span>
           </div>
+        )}
 
-          <SearchBar onSearch={fetchResults} />
+        {error && <p className="search-error">{error}</p>}
+
+        {!loading && results.length === 0 && query && !error && (
+          <p className="search-empty">
+            No results for <span>"{query}"</span> in {LABELS[category]}
+          </p>
+        )}
+
+        {/* Results */}
+        {!loading && (
           <SearchResults
             results={results}
             category={category}
-            onInfoClick={handleInfoClick}
+            onInfoClick={(id) => { setSelectedItemId(id); setShowModal(true); }}
+            type={category}
           />
+        )}
 
-          {showModal && (
-            <SearchItemModal
-              itemId={selectedItemId}
-              category={category}
-              onClose={() => setShowModal(false)}
-            />
-          )}
-        </div>
       </div>
-    </>
+
+      {showModal && (
+        <SearchItemModal
+          itemId={selectedItemId}
+          category={category}
+          onClose={() => setShowModal(false)}
+        />
+      )}
+    </div>
   );
 };
 

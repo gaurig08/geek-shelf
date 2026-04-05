@@ -1,184 +1,329 @@
-/* General Page Container */
+
+/* ── PAGE — same container technique as homepage ────────────────────────────── */
 .detail-page {
-  padding: 80px 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center; /* Centering the content vertically */
-  font-family: 'Garamond', serif;
-  color: #ffffff;
-  background: linear-gradient(to bottom, #0c0c34, #452572);
-  backdrop-filter: blur(12px); /* Smooth and polished background blur */
-  min-height: 100vh;
-  overflow-y: auto;
-  text-align: center; /* Centering text for the entire page */
-}
-
-/* Detail Card Styling */
-.detail-card {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  padding: 2rem;
-  max-width: 900px;
+  position: relative;
   width: 100%;
-  border-radius: 20px;
-  backdrop-filter: blur(0px);
-  align-items: center; /* Centering the content horizontally */
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  margin: 0 auto;
+  font-family: 'Caveat', cursive;
 }
 
-/* Poster Image Styling */
-.detail-poster-container {
-  width: 300px; /* Adjust width to increase size of the poster */
-  height: auto;
-  max-height: 600px; /* Make sure it doesn’t get too tall */
-  aspect-ratio: 2 / 3; /* Ensures the aspect ratio stays the same */
-  border-radius: 1rem;
-  overflow: hidden;
-  background: url('/tile-texture.png') repeat;
+/* ── BACKGROUND IMAGE ───────────────────────────────────────────────────────── */
+.detail-bg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* ── LOADING ────────────────────────────────────────────────────────────────── */
+.detail-loading {
   display: flex;
-  justify-content: center;
   align-items: center;
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
-  margin-bottom: 20px; /* Space between poster and other content */
+  justify-content: center;
+  height: 100vh;
+  font-family: 'Caveat', cursive;
+  font-size: 2rem;
+  color: #3a5a7a;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ALL HOTSPOT ZONES — positions in % matching your Canva image layout.
+   Tune left/top/width/height until each zone lines up with your design.
+   The image is 1456×816 based on your upload.
+
+   Approximate zones from eyeballing your image:
+   - Poster (blue rect): left ~20%, top ~28%, width ~27%, height ~47%
+   - Title value:        left ~58%, top ~22%, width ~38%, height ~8%
+   - Category value:     left ~68%, top ~35%, width ~28%, height ~7%
+   - Status row:         left ~60%, top ~43%, width ~34%, height ~11%
+   - Genre input:        left ~56%, top ~56%, width ~40%, height ~7%
+   - Thoughts textarea:  left ~54%, top ~65%, width ~43%, height ~28%
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── POSTER ZONE ────────────────────────────────────────────────────────────── */
+.detail-poster-zone {
+  position: absolute;
+  left: 27.8%;
+  top: 32%;
+  width: 14%;
+  height: 38%;
+  overflow: hidden;
+  border-radius: 0px;
 }
 
 .detail-poster {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Ensures the image covers the container fully */
+  object-fit: cover;
   display: block;
-  border-radius: 12px;
 }
 
-/* Info Section - Form Inputs */
-.detail-info {
-  flex: 1;
+/* ── SHARED FIELD STYLE ─────────────────────────────────────────────────────── */
+.detail-field {
+  position: absolute;
   display: flex;
-  flex-direction: column;
-  gap: 30px;
-  text-align: left;
-  width: 100%;
-}
-.detail-page select {
-  margin-left: 15px;
-  padding: 10px;
-  font-family: 'Arial', sans-serif;
-  border-radius: 12px;
-  background-color: #3a3a67;
-  border: 1px solid #4e4e7e;
-  color: #e0d8ff;
+  align-items: center;
 }
 
-.detail-page textarea {
-  width: 100%;
-  margin-top: 15px;
-  padding: 19px;
-  font-family: 'Arial', sans-serif;
-  border-radius: 12px;
-  resize: vertical;
-  background-color: #3a3a67;
-  border: 1px solid #4e4e7e;
-  color: #e0d8ff;
-  font-size: 1rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transition: border-color 0.3s ease;
+.detail-value {
+  font-family: 'Ruge Boogie', cursive;
+  font-size: clamp(0.7rem, 1.8vw, 6rem);
+  color: #457db5;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
-
-.detail-page textarea:focus {
-  border-color: #66686c;
-  outline: none;
+.detail-title-text {
+  font-size: clamp(0.85rem, 1.8vw, 5rem);
+  color: #bf4b39;
 }
 
-.detail-page input[type="text"],
-.detail-page input[type="date"] {
-  width: 40%;
-  padding: 12px;
-  margin-left:15px ;
-  font-family: 'Arial', sans-serif;
-  border-radius: 12px;
-  background-color: #3a3a67;
-  border: 1px solid #4e4e7e;
-  color: #e0d8ff;
-  font-size: 1rem;
-  transition: border-color 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+/* ── TITLE ZONE ─────────────────────────────────────────────────────────────── */
+.detail-title-zone {
+  left: 59.8%;
+  top: 18%;
+  width: 38%;
+  height: 8%;
 }
 
-.detail-page input[type="text"]:focus,
-.detail-page input[type="date"]:focus {
-  border-color: #d5aa19;
-  outline: none;
+/* ── CATEGORY ZONE ──────────────────────────────────────────────────────────── */
+.detail-category-zone {
+  left: 63%;
+  top: 26.5%;
+  width: 30%;
+  height: 7%;
 }
 
-/* Labels and Subheadings */
-.detail-page label {
-  font-size: 1.1rem;
- 
-  color: #f2eef7;
-}
-.detail-page label strong{
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: #5b88f9;
-}
-
-h2 {
-  font-size: 1.7rem;
-  color: #ffffff;
-  text-align: center;
-  font-family: 'Cinzel Decorative';
-  text-shadow: 0 0 6px rgba(255, 255, 255, 0.15);
-  margin-bottom: 20px;
-}
-
-
-/* Save Button */
-.save-btn {
-  width: 100px;
-  background-color: #4d38b6;
-  color: #000;
-  padding: 12px 24px;
+/* ── STATUS STAMPS ──────────────────────────────────────────────────────────── */
+.detail-status-zone {
+  overflow: visible; 
+  position: absolute;
+  left: 61.1%;
+  top: 37.8%;
+  width: 21%;
+  height: 4%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   
-  font-family: 'Arial', sans-serif;
-  border: none;
-  border-radius: 12px;
+  gap: 10%;
+}
+
+.stamp-btn {
+  flex: 1;
+  height: 100%;
+  background: transparent;
+  border: 0px solid transparent;
+  border-radius: 6px;
   cursor: pointer;
-  margin-top: 20px;
-
-  transition: background-color 0.3s ease;
-  box-shadow: 0 0 15px rgba(77, 74, 66, 0.3);
+  display: flex;
+  align-items: flex-end;    /* ← changed */
+  justify-content: center;
+  position: relative;
+  overflow: visible;        /* ← added, lets label spill below */
+  transition: background 0.18s ease, border-color 0.18s ease, transform 0.15s ease;
+  padding: 0;
 }
 
-.save-btn:hover {
-  background-color: #ffc107;
+.stamp-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(58, 90, 122, 0.35);
+  transform: translateY(-2px);
 }
 
-/* Add space between the 'Your Thoughts' label and input box */
-.detail-page textarea + label {
-  margin-top: 1rem;
+/* Selected stamp — highlighted */
+.stamp-btn.stamp-active {
+  background: rgba(58, 90, 122, 0);
+  border-color: rgba(58, 90, 122, 0.6);
+  transform: translateY(-3px);
 }
 
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-  .detail-card {
-    padding: 1.5rem;
-  }
-
-  .poster-container {
-    width: 90%; /* Increase the size on smaller screens */
-    max-height: 400px;
-  }
-
-  .detail-info {
-    padding: 1rem;
-  }
-
-  .save-btn {
-    width: 100%;
-  }
+.stamp-label {
+  position: absolute;
+  top: 100%;              /* sits just below the box */
+  left: 47%;
+  transform: translateX(-50%);
+  margin-top: 3px;
+  font-family: 'Ruge Boogie', cursive;
+  font-size: clamp(0.5rem, 1.8vw, 1rem);
+  font-weight: 600;
+  color: #457db5;
+  text-align: center;
+  pointer-events: none;
+  white-space: nowrap;
 }
 
+.stamp-btn.stamp-active .stamp-label {
+  color: #33af77;
+}
 
+/* ── GENRE INPUT ────────────────────────────────────────────────────────────── */
+.detail-genre-zone {
+  left: 58%;
+  top: 50%;
+  width: 20%;
+  height: 7%;
+}
 
+/* ── THOUGHTS TEXTAREA ──────────────────────────────────────────────────────── */
+.detail-thoughts-zone {
+  position: absolute;
+  left: 58%;
+  top: 63%;
+  width: 26%;
+  height: 12%;
+}
 
+/* ── SHARED INPUT STYLES — transparent so bg lines show through ─────────────── */
+.detail-inline-input,
+.detail-thoughts-input {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: 'Ruge Boogie', cursive;
+  font-size: clamp(0.65rem, 2vw, 1.4rem);
+  color: #cb689b;
+  font-weight: 500;
+  resize: none;
+  padding: 2px 4px;
+  box-sizing: border-box;
+  caret-color: #d6548a;
+}
+
+.detail-inline-input::placeholder,
+.detail-thoughts-input::placeholder {
+  color: #d6548a99;
+}
+
+/* ── SAVE BUTTON ────────────────────────────────────────────────────────────── */
+.detail-save-btn {
+  position: absolute;
+  right: 26.5%;
+  bottom: 18%;
+  font-family: 'Ruge Boogie', cursive;
+  font-size: clamp(0.7rem, 1.5vw, 1rem);
+  letter-spacing: 0.06em;
+  background: rgb(19, 81, 142);
+  border: 2px solid rgb(63, 122, 181);
+  color: #e7f6ff;
+  border-radius: 20px;
+  padding: 0.4em 1.4em;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.detail-save-btn:hover {
+  background: rgba(50, 99, 151, 0.768);
+  border-color: rgba(58, 90, 122, 0.7);
+}
+
+.detail-save-btn.detail-save-done {
+  background: rgba(50, 153, 76, 0.826);
+  border-color: rgb(16, 96, 36);
+  color: #dffce7;
+}
+
+/* ── MOBILE — swap bg image and override all hotspot positions ──────────────── */
+@media (max-width: 600px) {
+  .detail-page {
+    aspect-ratio: unset;
+    min-height: 100svh;         /* fill full screen height */
+    height: 100svh;
+  }
+
+  .detail-bg {
+    content: url('/room/shelf-mobile.png');
+    object-fit: cover;
+    object-position: top;  
+  }
+
+  /* Poster — blue rect top center */
+  .detail-poster-zone {
+    left: 33.2% !important;
+    top: 19.8% !important;
+    width: 32% !important;
+    height: 21.6% !important;
+  }
+
+  /* Title — below poster area */
+  .detail-title-zone {
+    left: 18% !important;
+    top: 40.2% !important;
+    width: 70% !important;
+    height: 10% !important;
+  }
+  .detail-title-text {
+  font-size: clamp(0.85rem, 5vw, 4rem);
+}
+
+  /* Category */
+  .detail-category-zone {
+    left: 25% !important;
+    top: 46% !important;
+    width: 65% !important;
+    height: 10% !important;
+  }
+  .detail-value {
+    font-size: clamp(0.85rem, 5vw, 4rem);
+  }
+
+  /* Status — 4 stamps in a row after Status: label */
+  .detail-status-zone {
+    left: 22% !important;
+    top: 55.8% !important;
+    width: 65% !important;
+    height: 3% !important;
+    gap: 13% !important;
+  }
+  .stamp-label {
+
+  top: 100%;              /* sits just below the box */
+  left: 46%;
+  margin-top: 10px;
+  font-size: clamp(0.5rem, 1.8vw, 1rem);
+
+}
+
+  /* Genre */
+  .detail-genre-zone {
+    left: 15% !important;
+    top: 64% !important;
+    width: 72% !important;
+    height: 6% !important;
+  }
+
+  /* Your Thoughts */
+  .detail-thoughts-zone {
+    left: 15% !important;
+    top: 75% !important;
+    width: 73% !important;
+    height: 6% !important;
+  }
+
+  /* Save button */
+  .detail-save-btn {
+    right: 45% !important;
+    bottom: 14.5% !important;
+  }
+  .detail-inline-input,
+.detail-thoughts-input {
+  font-size: clamp(0.65rem, 4vw, 8rem);
+ 
+}
+
+  /* Labels always visible on mobile */
+  .stamp-label {
+    font-size: clamp(0.4rem, 2.2vw, 0.65rem) !important;
+  }
+}

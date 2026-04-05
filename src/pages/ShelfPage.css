@@ -1,99 +1,261 @@
-.shelf-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 3rem;
+/* CategoryListPage.css */
+@import url('https://fonts.googleapis.com/css2?family=Ruge+Boogie&display=swap');
+
+/* ── PAGE ──────────────────────────────────────────────────────────────────── */
+.category-page {
   min-height: 100vh;
   width: 100%;
-  flex-wrap: wrap;
-  overflow: visible;
 
-    /* 🖼️ Background image setup */
-  background-image: url('/bg/search7.webp'); /* or .png, etc. */
- 
+  background-attachment: fixed;
   background-size: cover;
   background-position: center;
-   background-repeat: no-repeat;
+  background-repeat: no-repeat;
 
-}
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* No justify-content: center — row position is controlled by margin-top below */
 
-.magic-card {
-  width: 280px;
-  height: 420px;
-  border-radius: 10px;
-  background-color: #cfccb4;
-  background-image: url('/cards/textured-paper.png');
-  background-size: cover;
-  background-blend-mode:multiply;
-  filter: contrast(1.1) brightness(1.3);
-  transform-style: preserve-3d;
+  padding: 0;
   overflow: hidden;
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  will-change: transform;
+  position: relative;
+  font-family: 'Ruge Boogie', cursive;
 }
 
-.magic-card:hover {
-  transform: perspective(800px) rotateX(8deg) rotateY(6deg) scale(1.04);
-  box-shadow:
-    0 12px 24px rgba(0, 0, 0, 0.3),
-    0 0 20px rgba(189, 148, 148, 0.15);
+/* ── TITLE ─────────────────────────────────────────────────────────────────── */
+.category-title {
+  font-size: 60px;
+  color: #191212;
+  /*
+    margin-top pushes the title down to where your shelf sits in the bg image.
+    Tune this value to match your specific Canva design.
+    Start at 28vh and adjust up/down until it aligns with your shelf graphic.
+  */
+  margin-top: 130px;
+  margin-bottom: 60px;
+  text-align: center;
+  letter-spacing: 3px;
+  font-family: 'Ruge Boogie', cursive;
+  text-shadow: 0 0px 0px rgba(96, 20, 20, 0.45);
+  flex-shrink: 0;
 }
 
-/* Magical glow overlay */
-.magic-card::before {
-  content: "";
+/* ── NOTIFICATION ──────────────────────────────────────────────────────────── */
+.notification {
+  background: rgba(255, 255, 210, 0.9);
+  padding: 0.6rem 1.2rem;
+  border: 1px solid #e8dcb5;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  color: #3f2c1e;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+/* ── HORIZONTAL SCROLL ROW WRAPPER ────────────────────────────────────────── */
+.shelf-row-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: visible;
+  padding: 1.5rem 4vw 2rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  flex-shrink: 0;
+}
+
+.shelf-row-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── THE ROW ITSELF ────────────────────────────────────────────────────────── */
+.shelf-row {
+  display: flex;
+  flex-direction: row;
+  gap: 2.5rem;
+  align-items: flex-end;
+  width: max-content;
+  padding-bottom: 1rem;
+}
+
+/* ── CARD ──────────────────────────────────────────────────────────────────── */
+.category-card {
+  position: relative;
+  flex-shrink: 0;
+ 
+  width: clamp(110px, 14vw, 180px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.category-card-link {
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── POSTER ────────────────────────────────────────────────────────────────── */
+.poster-container {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  border-radius: 0.65rem;
+  overflow: hidden;
+  background: #2a2a3a;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.category-card:hover .poster-container {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.55);
+}
+
+.poster-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── CARD TITLE ────────────────────────────────────────────────────────────── */
+.category-card h4 {
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+  font-size: 14px;
+  color: #4050ae;
+  text-align: center;
+  margin: 0.45rem 0 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  text-shadow: 0 1px 4px rgba(43, 22, 22, 0);
+}
+
+/* ── DELETE BUTTON ─────────────────────────────────────────────────────────── */
+.delete-icon {
   position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at center, rgba(255, 235, 161, 0.25), transparent 70%);
+  top: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.65);
+  border: none;
+  border-radius: 50%;
+  padding: 7px;
+  cursor: pointer;
+  z-index: 3;
+  color: #ffffff;
+  transition: background 0.2s ease, transform 0.2s ease;
+  line-height: 0;
   opacity: 0;
-  transition: opacity 0.4s ease;
-  z-index: 2;
 }
 
-.magic-card:hover::before {
+.category-card:hover .delete-icon {
   opacity: 1;
 }
 
-/* Image stays sharp */
-.card-img {
-  width: 100%;
-  height: 100%;
-  object-fit:fill;
-  mix-blend-mode: multiply;
-  opacity: 0.95;
-  pointer-events: none;
+.delete-icon:hover {
+  background: rgba(220, 60, 60, 0.85);
+  transform: scale(1.15);
 }
+
+/* ── EMPTY STATE ───────────────────────────────────────────────────────────── */
+.empty-shelf {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  color: #fff9f9;
+  font-size: 1.2rem;
+  text-align: center;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+/* ── TABLET (768px – 1150px) ───────────────────────────────────────────────── */
+@media (max-width: 1150px) {
+  .category-title {
+    font-size: 48px;
+    margin-top: 109px;
+    margin-bottom: -2px;
+  }
+
+  .shelf-row {
+    gap: 6rem;
+  }
+
+  .category-card {
+    width: clamp(100px, 20vw, 155px);
+  }
+  .delete-icon {
+    opacity: 1;
+    right: -5px;
+  }
+}
+
+/* ── SMALL TABLET (600px – 768px) ──────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .shelf-fullscreen {
-    flex-direction: column;
-    align-items: center;
+  .category-page {
+    background-attachment: scroll;
+  }
+
+  .category-title {
+    font-size: 38px;
+    margin-top: 18vh;
+    margin-bottom: 10px;
+  }
+
+  .shelf-row {
+    gap: 6rem;
+  }
+
+  .shelf-row-wrapper {
+    padding: 1rem 3vw 1.5rem;
+  }
+
+  .category-card {
+    width: clamp(90px, 22vw, 140px);
+  }
+
+  .delete-icon {
+    opacity: 1;
+    right: -15px;
   }
 }
 
-.shelf-container {
-  padding-top: 4rem; /* Push content down a bit on all screen sizes */
-  padding-bottom: 2rem;
-}
-
-/* Responsive card sizing */
-@media (max-width: 1024px) {
-  .magic-card {
-    width: 220px;
-    height: 330px;
+/* ── MOBILE (under 600px) ──────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .category-page {
+    background-attachment: scroll;
   }
-}
 
-@media (max-width: 768px) {
-  .magic-card {
-    width: 180px;
-    height: 270px;
+  .category-title {
+    font-size: 40px;
+    margin-top: 18vh;
+    margin-bottom: 185px;
+    letter-spacing: 4px;
   }
-}
 
-@media (max-width: 480px) {
-  .magic-card {
-    width: 150px;
-    height: 225px;
+  .shelf-row {
+    gap: 6rem;
+  }
+
+  .shelf-row-wrapper {
+    padding: 0.75rem 2vw 1.25rem;
+  }
+
+  .category-card {
+    width: clamp(80px, 26vw, 120px);
+  }
+
+  .category-card h4 {
+    font-size: 13px;
+  }
+
+  .delete-icon {
+    opacity: 1;
+  
+    right: -10px;
   }
 }

@@ -1,62 +1,108 @@
-import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+// src/pages/CategoryListPage.jsx
+import { useParams, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { db } from "../firebase";
+import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 import "./ShelfPage.css";
+import { Trash2 } from "lucide-react";
 
+// ── Per-category config ───────────────────────────────────────────────────────
+// Add your bg image paths here as you design them in Canva.
+// background: the fixed bg image for the page
+// title: display label shown at top
+const CATEGORY_CONFIG = {
+  Book:   { background: "/room/book-shelf.png",   title: "Books"   },
+  Movies: { background: "/room/movies-shelf.png",  title: "Movies"  },
+  Series: { background: "/room/series-shelf.png",  title: " "  },
+  Anime:  { background: "/room/anime-shelf.png",   title: " "   },
+};
 
-const CATEGORIES = [
-  { key: "Book", label: "Books", image: "/cards/b.webp" },
-  { key: "Movies", label: "Movies", image: "/cards/m.webp" },
-  { key: "Series", label: "Series", image: "/cards/s.webp" },
-  { key: "Anime", label: "Anime", image: "/cards/a.webp" }
-];
+// Fallback if category not in config
+const DEFAULT_CONFIG = { background: "/bg/wall.webp", title: "Shelf" };
 
 const ShelfPage = () => {
-  const navigate = useNavigate();
+  const { category } = useParams();
+  const [items, setItems] = useState([]);
+  const [notification, setNotification] = useState("");
+  const user = getAuth().currentUser;
 
-  const handleMouseMove = (e, card) => {
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    const rotateX = ((y - centerY) / centerY) * -18;
-    const rotateY = ((x - centerX) / centerX) * 18;
+  // Normalise URL param → "Book", "Movies" etc.
+  const formattedCategory =
+    category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
 
-    card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.08)`;
-    card.style.boxShadow = `0 25px 40px rgba(255, 255, 255, 0.15), 0 8px 20px rgba(0, 0, 0, 0.25)`;
-  };
+  const config = CATEGORY_CONFIG[formattedCategory] ?? DEFAULT_CONFIG;
 
-  const resetTransform = (card) => {
-    card.style.transform = "rotateX(0deg) rotateY(0deg) scale(1)";
-    card.style.boxShadow = "0 10px 15px rgba(0,0,0,0.1)";
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!user) return;
+      try {
+        const shelfRef = collection(db, "users", user.uid, "shelf");
+        const querySnapshot = await getDocs(shelfRef);
+        const filtered = querySnapshot.docs
+          .map((d) => ({ id: d.id, ...d.data() }))
+          .filter((item) => item.category === formattedCategory);
+        setItems(filtered);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, [category, user]);
+
+  const handleDelete = async (itemId) => {
+    if (!window.confirm("Are you sure you want to delete this item?")) return;
+    try {
+      await deleteDoc(doc(db, "users", user.uid, "shelf", itemId));
+      setItems((prev) => prev.filter((item) => item.id !== itemId));
+      setNotification("Item deleted.");
+      setTimeout(() => setNotification(""), 2500);
+    } catch (error) {
+      console.error("Error deleting item:", error);
+    }
   };
 
   return (
-    <div className="shelf-container">
-      {CATEGORIES.map((cat, index) => (
-        <motion.div
-          key={cat.key}
-          className="magic-card"
-          initial={{ opacity: 0, y: 150, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{
-            duration: 1.8,
-            ease: [0.22, 1, 0.36, 1],
-            delay: index * 0.5
-          }}
-          onClick={() => navigate(`/shelf/${cat.key}`)}
-          onMouseMove={(e) => handleMouseMove(e, e.currentTarget)}
-          onMouseLeave={(e) => resetTransform(e.currentTarget)}
-        >
-          <img src={cat.image} alt={cat.label} className="card-img" />
-        </motion.div>
-      ))}
+    <div
+      className="category-page"
+      style={{ backgroundImage: `url('${config.background}')` }}
+    >
+      <h2 className="category-title">{config.title}</h2>
+
+      {notification && <div className="notification">{notification}</div>}
+
+      {items.length === 0 ? (
+        <div className="empty-shelf">
+          <p>Nothing here yet. Search for something to add! 🕯️</p>
+        </div>
+      ) : (
+        <div className="shelf-row-wrapper">
+          <div className="shelf-row">
+            {items.map((item) => (
+              <div key={item.id} className="category-card">
+                <button
+                  className="delete-icon"
+                  onClick={() => handleDelete(item.id)}
+                  title="Delete"
+                >
+                  <Trash2 size={16} strokeWidth={2} />
+                </button>
+                <Link to={`/shelf/item/${item.id}`} className="category-card-link">
+                  <div className="poster-container">
+                    <img
+                      src={item.poster || "https://via.placeholder.com/300x450?text=No+Image"}
+                      alt={item.title}
+                    />
+                  </div>
+                  <h4>{item.title}</h4>
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
 export default ShelfPage;
-
-
-
-

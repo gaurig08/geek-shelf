@@ -4,53 +4,51 @@ import { db } from "../firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import "./ShelfItemDetailPage.css";
-import { color } from "three/tsl";
+
+const STATUSES = [
+  { value: "Planning",  label: "Planning"  },
+  { value: "Watching",  label: "Watching"  },
+  { value: "Completed", label: "Completed" },
+  { value: "Dropped",   label: "Dropped"   },
+];
 
 const ShelfItemDetailPage = () => {
   const { itemId } = useParams();
-  const [item, setItem] = useState(null);
-  const [thoughts, setThoughts] = useState("");
-  const [status, setStatus] = useState("");
+  const [item, setItem]             = useState(null);
+  const [thoughts, setThoughts]     = useState("");
+  const [status, setStatus]         = useState("Planning");
   const [watchedDate, setWatchedDate] = useState("");
-  const [genre, setGenre] = useState("");
+  const [genre, setGenre]           = useState("");
+  const [saved, setSaved]           = useState(false);
   const user = getAuth().currentUser;
 
   useEffect(() => {
     const fetchItemDetails = async () => {
       if (!user) return;
-
-      const docRef = doc(db, "users", user.uid, "shelf", itemId);
+      const docRef  = doc(db, "users", user.uid, "shelf", itemId);
       const docSnap = await getDoc(docRef);
-
       if (docSnap.exists()) {
-        const itemData = docSnap.data();
-        setItem(itemData);
-        setThoughts(itemData.thoughts || "");
-        setStatus(itemData.status || "Planning");
-        setWatchedDate(itemData.watchedDate || "");
-        setGenre(itemData.genre || "");
-      } else {
-        console.error("No such item found!");
+        const data = docSnap.data();
+        setItem(data);
+        setThoughts(data.thoughts    || "");
+        setStatus(data.status        || "Planning");
+        setWatchedDate(data.watchedDate || "");
+        setGenre(data.genre          || "");
       }
     };
-
     fetchItemDetails();
   }, [itemId, user]);
 
   const handleSave = async () => {
     if (!user) return;
-
     try {
-      const docRef = doc(db, "users", user.uid, "shelf", itemId);
-      await updateDoc(docRef, {
-        thoughts,
-        status,
-        watchedDate,
-        genre,
+      await updateDoc(doc(db, "users", user.uid, "shelf", itemId), {
+        thoughts, status, watchedDate, genre,
       });
-      alert("Details updated!");
-    } catch (error) {
-      console.error("Error updating item:", error);
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+    } catch (err) {
+      console.error("Error updating item:", err);
     }
   };
 
@@ -58,71 +56,77 @@ const ShelfItemDetailPage = () => {
 
   return (
     <div className="detail-page">
-      <div className="detail-card">
-        <div className="detail-poster-container">
-          <img
-            src={item.poster || "https://via.placeholder.com/300x450?text=No+Image"}
-            alt={item.title}
-            className="detail-poster"
-          />
-        </div>
-        <div className="detail-info">
-          <h2>{item.title}</h2>
-          <label><strong >Category: </strong>{item.category}</label>
+      {/* ── Background journal image ── */}
+      <img
+        src="/room/shelf-detail.png"
+        alt=""
+        className="detail-bg"
+        draggable="false"
+      />
 
-          <label>
-            <strong>Status:</strong>
-            <select value={status} onChange={(e) => setStatus(e.target.value)}>
-              <option value="Planning">Planning</option>
-              <option value="Watching">Watching</option>
-              <option value="Completed">Completed</option>
-              <option value="Dropped">Dropped</option>
-            </select>
-          </label>
-
-          <label>
-            <strong>Finished / Last Watched:</strong>
-            <input
-              type="date"
-              value={watchedDate}
-              onChange={(e) => setWatchedDate(e.target.value)}
-            />
-          </label>
-
-          <label>
-            <strong>Genre:</strong>
-            <input
-              type="text"
-              value={genre}
-              onChange={(e) => setGenre(e.target.value)}
-              placeholder="Enter genre(s)..."
-            />
-          </label>
-
-          <label><strong>Summary:</strong> 
-          <p>{item.summary}</p>
-          </label>
-
-          <label>
-            <strong>Your Thoughts:</strong>
-            <textarea
-              value={thoughts}
-              onChange={(e) => setThoughts(e.target.value)}
-              placeholder="Write your thoughts here..."
-              rows={5}
-            />
-          </label>
-
-          <button className="save-btn" onClick={handleSave}>Save</button>
-        </div>
+      {/* ── Poster sits over the blue rectangle area ── */}
+      <div className="detail-poster-zone">
+        <img
+          src={item.poster || "https://via.placeholder.com/300x450?text=No+Image"}
+          alt={item.title}
+          className="detail-poster"
+        />
       </div>
+
+      {/* ── Title ── */}
+      <div className="detail-field detail-title-zone">
+        <span className="detail-value detail-title-text">{item.title}</span>
+      </div>
+
+      {/* ── Category ── */}
+      <div className="detail-field detail-category-zone">
+        <span className="detail-value">{item.category}</span>
+      </div>
+
+      {/* ── Status stamps — 4 hotspots over the 4 black squares ── */}
+      <div className="detail-status-zone">
+        {STATUSES.map((s) => (
+          <button
+            key={s.value}
+            className={`stamp-btn ${status === s.value ? "stamp-active" : ""}`}
+            onClick={() => setStatus(s.value)}
+            title={s.value}
+          >
+            <span className="stamp-label">{s.label}</span>
+          </button>
+        ))}
+      </div>
+
+      {/* ── Genre — inline editable ── */}
+      <div className="detail-field detail-genre-zone">
+        <input
+          className="detail-inline-input"
+          type="text"
+          value={genre}
+          onChange={(e) => setGenre(e.target.value)}
+          placeholder="e.g. Fantasy, History,..."
+        />
+      </div>
+
+      {/* ── Your Thoughts ── */}
+      <div className="detail-thoughts-zone">
+        <textarea
+          className="detail-thoughts-input"
+          value={thoughts}
+          onChange={(e) => setThoughts(e.target.value)}
+          placeholder="Write your thoughts here..."
+        />
+      </div>
+
+      {/* ── Save button ── */}
+      <button
+        className={`detail-save-btn ${saved ? "detail-save-done" : ""}`}
+        onClick={handleSave}
+      >
+        {saved ? "Saved" : "Save"}
+      </button>
     </div>
   );
 };
 
 export default ShelfItemDetailPage;
-
-
-
-
-

@@ -1,109 +1,187 @@
-/* Background overlay */
-.background-layer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  background: linear-gradient(to bottom, #141434, #252555);
-  background-image: url("/bg/w7.webp");
-  background-size: cover;
-  background-position: center;
-  z-index: 0;
-}
+/* SearchPage.css */
 
-/* Make content scroll over it */
-.search-page-wrapper {
+.search-page {
   position: relative;
   min-height: 100vh;
   width: 100%;
-  z-index: 1; /* above background */
   overflow-x: hidden;
-  padding-bottom: 100px;
 }
 
-/* Container: allows scrolling with content */
-.spirit-animal-container {
+/* ── BACKGROUND ─────────────────────────────────────────────────────────────── */
+/* Drop your wallpaper path here when ready */
+.search-bg {
+  position: fixed;
+  inset: 0;
+  background-image: url('/bg/search7.webp'); /* ← change this path */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  z-index: 0;
+  /* Fallback colour while image loads or if no image set */
+  background-color: #180e07;
+}
+
+/* Dark overlay — makes text readable over any wallpaper */
+.search-overlay {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(15, 8, 3, 0.55) 0%,
+    rgba(15, 8, 3, 0.45) 60%,
+    rgba(15, 8, 3, 0.7)  100%
+  );
+  z-index: 1;
+}
+
+/* ── INNER CONTENT ──────────────────────────────────────────────────────────── */
+.search-inner {
   position: relative;
-  width: 100%;
-  height: 0; /* Avoid pushing layout */
-  z-index: 4;
-  pointer-events: none;
+  z-index: 2;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 6rem 2rem 6rem;
 }
 
-/* General spirit positioning */
-.spirit-animal-container > div {
-  position: absolute;
-  transform: translateY(-100%);
+/* ── HEADER ─────────────────────────────────────────────────────────────────── */
+.search-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
 }
 
-/* Orb Wrapper */
-.spirit-orb-wrapper {
-  left: 8%;
-  top: 60px;
+.search-title {
+  font-family: 'Ruge Boogie', cursive;
+  font-size: clamp(2rem, 5vw, 3.8rem);
+  color: #f5d89a;
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 24px rgba(245, 185, 80, 0.35);
+  line-height: 1.2;
 }
 
-/* Glowing Animal */
-.glowing-animal-wrapper {
-  left: 60%;
-  top: 12px;
-  transform: translateX(-50%) translateY(-100%);
+.search-subtitle {
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+  font-size: clamp(0.8rem, 1.8vw, 1rem);
+  color: #b89a6a;
+  letter-spacing: 1px;
 }
 
-/* Cat Wrapper */
-.cat-wrapper {
-  left: 38%;
-  top: 110px;
-  transform: translateX(-50%) translateY(-100%);
-}
-.category-filter {
-  margin-left: 5px; /* shifts it to the right */
-  margin-top: 10px;
+/* ── CATEGORY TABS ──────────────────────────────────────────────────────────── */
+.category-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
 }
 
-.category-filter select {
-  background-color: #212127; /* dark mystical background */
-  color: #fff; /* white text for contrast */
-  border: 1px solid #444;
-  padding: 4px 5px;
-  border-radius: 8px;
-  font-size: 1rem;
-  margin-left: 8px;
-  font-family: 'Garamond' , serif;
+.cat-tab {
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+  font-size: 0.95rem;
+  padding: 0.5rem 1.4rem;
+  border-radius: 999px;
+  border: 1.5px solid rgba(200, 150, 60, 0.35);
+  background: rgba(30, 15, 5, 0.6);
+  color: #c8a06a;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
 }
 
+.cat-tab:hover {
+  border-color: rgba(245, 185, 80, 0.6);
+  color: #f5d89a;
+  background: rgba(50, 25, 8, 0.7);
+  transform: translateY(-2px);
+}
 
-/* Responsive tweaks */
-@media (max-width: 1024px) {
-  .spirit-orb-wrapper {
-    left: 8%;
-    top: 60px;
+.cat-tab.active {
+  background: rgba(160, 90, 20, 0.55);
+  border-color: #c8900a;
+  color: #f5d89a;
+  box-shadow: 0 0 14px rgba(200, 144, 10, 0.3);
+  transform: translateY(-2px);
+}
+
+/* ── LOADING ────────────────────────────────────────────────────────────────── */
+.search-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  justify-content: center;
+  padding: 2.5rem 0;
+  font-family: 'Comic Sans MS', cursive;
+  font-size: 0.95rem;
+  color: #b89a6a;
+}
+
+.spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(200, 144, 10, 0.2);
+  border-top-color: #c8900a;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── ERROR / EMPTY ──────────────────────────────────────────────────────────── */
+.search-error {
+  text-align: center;
+  font-family: 'Comic Sans MS', cursive;
+  font-size: 0.9rem;
+  color: #f87171;
+  padding: 1rem 0;
+}
+
+.search-empty {
+  text-align: center;
+  font-family: 'Comic Sans MS', cursive;
+  font-size: 0.95rem;
+  color: #8a7055;
+  padding: 2rem 0;
+}
+
+.search-empty span {
+  color: #c8a06a;
+}
+
+/* ── RESPONSIVE ─────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .search-inner {
+    padding: 5rem 1.25rem 4rem;
   }
 
-  .glowing-animal-wrapper {
-    left: 60%;
-    top: 12px;
+  .category-tabs {
+    gap: 0.5rem;
   }
 
-  .cat-wrapper {
-    left: 38%;
-    top: 110px;
+  .cat-tab {
+    font-size: 0.85rem;
+    padding: 0.4rem 1rem;
   }
 }
 
-@media (max-width: 600px) {
-  .spirit-orb-wrapper {
-    left: 8%;
-    top: 20px;
+@media (max-width: 480px) {
+  .search-inner {
+    padding: 4.5rem 1rem 3rem;
   }
 
-  .glowing-animal-wrapper {
-    left: 60%;
-    top: 12px;
+  .search-title {
+    font-size: 1.8rem;
   }
 
-  .cat-wrapper {
-    left: 38%;
-    top: 110px;
+  .category-tabs {
+    gap: 0.4rem;
+  }
+
+  .cat-tab {
+    font-size: 0.8rem;
+    padding: 0.35rem 0.85rem;
   }
 }

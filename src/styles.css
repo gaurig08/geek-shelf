@@ -1,3 +1,17 @@
+/* Top of index.css */
+@font-face {
+  font-family: 'Ruge Boogie';
+  src: url('./assets/RugeBoogie-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap; 
+}
+
+body, #root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
 html, body, #root {
   height: 100%;
   width: 100%;
@@ -24,7 +38,7 @@ body {
   background: #0e0e1f;
   color: #f0f8ff;
   transition: background 0.3s ease-in-out;
-  font-family: 'Quicksand', sans-serif;
+  font-family: 'Ruge Boogie', cursive;
 }
 
 body.no-scroll {
@@ -69,5 +83,71 @@ body::-webkit-scrollbar {
     font-size: 1.2rem;
     text-align: center;
     padding: 2rem;
+  }
+}
+/* Remove the old mobile blocker styles if you have them */
+.mobile-blocker {
+  display: none !important;
+}
+
+/* ── NAVBAR responsive ─────────────────────────────────────────────────────── */
+nav, .navbar, .nav-bar {
+  flex-wrap: wrap;
+  padding: 0.5rem 1rem;
+}
+
+/* ── SHELF PAGE (the 4 category cards) ────────────────────────────────────── */
+.shelf-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 2rem 1rem;
+  min-height: 100vh;
+  align-items: center;
+}
+
+.magic-card {
+  /* Cards scale with viewport — never overflow on small screens */
+  width: clamp(140px, 20vw, 260px);
+  cursor: pointer;
+}
+
+.magic-card .card-img {
+  width: 100%;
+  height: auto;
+  border-radius: 1rem;
+  display: block;
+}
+
+/* ── GENERAL RESPONSIVE RESETS ─────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+img {
+  max-width: 100%;
+}
+
+/* ── BREAKPOINTS ───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .shelf-container {
+    gap: 1rem;
+    padding: 1.5rem 0.75rem;
+  }
+
+  .magic-card {
+    width: clamp(120px, 40vw, 200px);
+  }
+}
+
+@media (max-width: 480px) {
+  .shelf-container {
+    gap: 0.75rem;
+    padding: 1rem 0.5rem;
+  }
+
+  .magic-card {
+    width: clamp(110px, 42vw, 170px);
   }
 }

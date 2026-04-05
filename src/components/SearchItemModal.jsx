@@ -33,7 +33,7 @@ const SearchItemModal = ({ itemId, category, onClose }) => {
           setItem(data);
           break;
 
-        case "Book":
+        case "Books":
           response = await fetch(`/api/books?path=/volumes/${itemId}`);
           data = await response.json();
           setItem(data.volumeInfo);
