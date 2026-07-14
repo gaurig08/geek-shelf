@@ -1,101 +1,108 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
-import { auth, db } from "../firebase";
+import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "../firebase";
+import { useAuth } from "./AuthProvider";
+import { getAuthErrorMessage } from "../utils/getAuthErrorMessage";
 import "./Auth.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
+  const { currentUser, authError } = useAuth();
 
-  const checkApprovalAndNavigate = async (user) => {
-    try {
-     if (!user) {
-        setError("User object is null or undefined.");
-        await signOut(auth);
-        return false;
-      }
+  // AuthProvider is the single source of truth for whether sign-in
+  // actually succeeded (it also enforces approval). Once it reports a
+  // signed-in user, navigate home. If it reports an approval error,
+  // surface that here instead of running our own separate check.
+  useEffect(() => {
+    if (currentUser) navigate("/");
+  }, [currentUser, navigate]);
 
-      const userRef = doc(db, "users", user.uid);
-      const userSnap = await getDoc(userRef);
-
-      if (!userSnap.exists()) {
-        setError("Account does not exist in the database.");
-        await signOut(auth);
-        return false;
-      }
-
-      const userData = userSnap.data();
-// REMOVED: console.log("Fetched user data:", userData);
- // A more explicit check to ensure 'approved' is a boolean and is true
-      if (!userData || typeof userData.approved !== 'boolean' || !userData.approved) {
-        setError("Your account is pending approval.");
-        await signOut(auth);
-        return false;
-      }
-
-      navigate("/"); // approved -> go home
-      return true;
-    } catch (err) {
-      console.error("Error during approval check:", err);
-      setError("Error checking account approval. Please try again later.");
-      return false;
-    }
-  };
+  useEffect(() => {
+    if (authError) setError(authError);
+  }, [authError]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
+    setSubmitting(true);
     try {
-     const userCredential = await signInWithEmailAndPassword(auth, email, password);
-     await checkApprovalAndNavigate(userCredential.user);
+      await signInWithEmailAndPassword(auth, email, password);
+      // Success/failure past this point (approval, etc.) is handled by
+      // AuthProvider and reflected via currentUser/authError above.
     } catch (err) {
       console.error(err);
-      setError(err.message);
-   }
+      setError(getAuthErrorMessage(err));
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleGoogleLogin = async () => {
-   setError("");
+    setError("");
+    setSubmitting(true);
     try {
-     const provider = new GoogleAuthProvider();
-     const result = await signInWithPopup(auth, provider);
-     await checkApprovalAndNavigate(result.user);
-   } catch (err) {
-     console.error(err);
-     setError(err.message);
-   }
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(auth, provider);
+    } catch (err) {
+      console.error(err);
+      setError(getAuthErrorMessage(err));
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
     <div className="auth-container">
       <form onSubmit={handleLogin} className="auth-form">
         <h2>Log In</h2>
-        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        <button type="submit">Log In</button>
+        <input
+          type="email"
+          id="login-email"
+          name="email"
+          autoComplete="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          disabled={submitting}
+        />
+        <input
+          type="password"
+          id="login-password"
+          name="password"
+          autoComplete="current-password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          disabled={submitting}
+        />
+        <button type="submit" disabled={submitting}>
+          {submitting ? "Logging in..." : "Log In"}
+        </button>
 
-       <div className="or-separator">OR</div>
+        <div className="or-separator">OR</div>
 
-        <div className="google-btn" onClick={handleGoogleLogin}>
-        <img src="/signin.webp" alt="Google" />
+        <div
+          className={`google-btn ${submitting ? "disabled" : ""}`}
+          onClick={submitting ? undefined : handleGoogleLogin}
+        >
+          <img src="/signin.webp" alt="Google" />
         </div>
 
         {error && <p className="auth-error">{error}</p>}
 
-         <p>
-         Don't have an account? <span className="auth-link" onClick={() => navigate("/signup")}>Sign Up</span>
+        <p>
+          Don't have an account? <span className="auth-link" onClick={() => navigate("/signup")}>Sign Up</span>
         </p>
-       </form>
+      </form>
     </div>
   );
 };
 
 export default Login;
-
-
-
-

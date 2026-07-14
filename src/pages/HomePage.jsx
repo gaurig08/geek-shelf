@@ -15,7 +15,7 @@ const HOTSPOTS = [
   {
     id: "movies",
     label: "Movies",
-    route: "/shelf/Movies",
+    route: "/shelf/Movie",
     style: { left: "64.3%", top: "24%", width: "10%", height: "22%" },
   },
   {

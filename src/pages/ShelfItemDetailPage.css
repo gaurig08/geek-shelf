@@ -1,329 +1,281 @@
-
-/* ── PAGE — same container technique as homepage ────────────────────────────── */
 .detail-page {
+  min-height: 100vh;
+  padding: 130px 20px 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-  margin: 0 auto;
-  font-family: 'Caveat', cursive;
+  overflow-x: hidden;
+  font-family: 'Quicksand', sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 15% 10%, rgba(107, 156, 199, 0.14), transparent 45%),
+    radial-gradient(circle at 85% 25%, rgba(232, 93, 117, 0.10), transparent 40%),
+    var(--bg-1);
 }
 
-/* ── BACKGROUND IMAGE ───────────────────────────────────────────────────────── */
-.detail-bg {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
-  display: block;
-  user-select: none;
-  -webkit-user-drag: none;
-}
-
-/* ── LOADING ────────────────────────────────────────────────────────────────── */
 .detail-loading {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  font-family: 'Caveat', cursive;
-  font-size: 2rem;
-  color: #3a5a7a;
+  height: 60vh;
+  font-size: 1.2rem;
+  color: var(--text);
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   ALL HOTSPOT ZONES — positions in % matching your Canva image layout.
-   Tune left/top/width/height until each zone lines up with your design.
-   The image is 1456×816 based on your upload.
+.detail-back-arrow {
+  position: fixed;
+  top: 96px;
+  left: 20px;
+  border: none;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  cursor: pointer;
+}
 
-   Approximate zones from eyeballing your image:
-   - Poster (blue rect): left ~20%, top ~28%, width ~27%, height ~47%
-   - Title value:        left ~58%, top ~22%, width ~38%, height ~8%
-   - Category value:     left ~68%, top ~35%, width ~28%, height ~7%
-   - Status row:         left ~60%, top ~43%, width ~34%, height ~11%
-   - Genre input:        left ~56%, top ~56%, width ~40%, height ~7%
-   - Thoughts textarea:  left ~54%, top ~65%, width ~43%, height ~28%
-   ═══════════════════════════════════════════════════════════════════════════ */
+/* Large surface card - softer, wider glow than a button, using theme
+   surface/text but its own gentle shadow rather than the tight
+   button-scale neu-raised shadow. */
+.detail-card {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  gap: 32px;
+  border-radius: 24px;
+  padding: 28px;
+  position: relative;
+  box-shadow: 8px 8px 20px var(--shadow-dark), -8px -8px 20px var(--shadow-light);
+}
 
-/* ── POSTER ZONE ────────────────────────────────────────────────────────────── */
-.detail-poster-zone {
-  position: absolute;
-  left: 27.8%;
-  top: 32%;
-  width: 14%;
-  height: 38%;
-  overflow: hidden;
-  border-radius: 0px;
+.detail-poster-col {
+  flex-shrink: 0;
 }
 
 .detail-poster {
-  width: 100%;
-  height: 100%;
+  width: 220px;
+  height: 320px;
   object-fit: cover;
-  display: block;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 40px rgba(107, 156, 199, 0.15);
 }
 
-/* ── SHARED FIELD STYLE ─────────────────────────────────────────────────────── */
-.detail-field {
-  position: absolute;
+.detail-info-col {
+  flex: 1;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
 }
 
-.detail-value {
-  font-family: 'Ruge Boogie', cursive;
-  font-size: clamp(0.7rem, 1.8vw, 6rem);
-  color: #457db5;
-  font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-}
-
-.detail-title-text {
-  font-size: clamp(0.85rem, 1.8vw, 5rem);
-  color: #bf4b39;
-}
-
-/* ── TITLE ZONE ─────────────────────────────────────────────────────────────── */
-.detail-title-zone {
-  left: 59.8%;
-  top: 18%;
-  width: 38%;
-  height: 8%;
-}
-
-/* ── CATEGORY ZONE ──────────────────────────────────────────────────────────── */
-.detail-category-zone {
-  left: 63%;
-  top: 26.5%;
-  width: 30%;
-  height: 7%;
-}
-
-/* ── STATUS STAMPS ──────────────────────────────────────────────────────────── */
-.detail-status-zone {
-  overflow: visible; 
-  position: absolute;
-  left: 61.1%;
-  top: 37.8%;
-  width: 21%;
-  height: 4%;
+.detail-top-row {
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  
-  gap: 10%;
+  gap: 10px;
 }
 
-.stamp-btn {
-  flex: 1;
-  height: 100%;
-  background: transparent;
-  border: 0px solid transparent;
-  border-radius: 6px;
-  cursor: pointer;
-  display: flex;
-  align-items: flex-end;    /* ← changed */
-  justify-content: center;
-  position: relative;
-  overflow: visible;        /* ← added, lets label spill below */
-  transition: background 0.18s ease, border-color 0.18s ease, transform 0.15s ease;
-  padding: 0;
-}
-
-.stamp-btn:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(58, 90, 122, 0.35);
-  transform: translateY(-2px);
-}
-
-/* Selected stamp — highlighted */
-.stamp-btn.stamp-active {
-  background: rgba(58, 90, 122, 0);
-  border-color: rgba(58, 90, 122, 0.6);
-  transform: translateY(-3px);
-}
-
-.stamp-label {
-  position: absolute;
-  top: 100%;              /* sits just below the box */
-  left: 47%;
-  transform: translateX(-50%);
-  margin-top: 3px;
-  font-family: 'Ruge Boogie', cursive;
-  font-size: clamp(0.5rem, 1.8vw, 1rem);
-  font-weight: 600;
-  color: #457db5;
-  text-align: center;
-  pointer-events: none;
-  white-space: nowrap;
-}
-
-.stamp-btn.stamp-active .stamp-label {
-  color: #33af77;
-}
-
-/* ── GENRE INPUT ────────────────────────────────────────────────────────────── */
-.detail-genre-zone {
-  left: 58%;
-  top: 50%;
-  width: 20%;
-  height: 7%;
-}
-
-/* ── THOUGHTS TEXTAREA ──────────────────────────────────────────────────────── */
-.detail-thoughts-zone {
-  position: absolute;
-  left: 58%;
-  top: 63%;
-  width: 26%;
-  height: 12%;
-}
-
-/* ── SHARED INPUT STYLES — transparent so bg lines show through ─────────────── */
-.detail-inline-input,
-.detail-thoughts-input {
-  width: 100%;
-  height: 100%;
-  background: transparent;
+.favorite-btn {
+  border-radius: 50%;
   border: none;
-  outline: none;
-  font-family: 'Ruge Boogie', cursive;
-  font-size: clamp(0.65rem, 2vw, 1.4rem);
-  color: #cb689b;
-  font-weight: 500;
-  resize: none;
-  padding: 2px 4px;
-  box-sizing: border-box;
-  caret-color: #d6548a;
-}
-
-.detail-inline-input::placeholder,
-.detail-thoughts-input::placeholder {
-  color: #d6548a99;
-}
-
-/* ── SAVE BUTTON ────────────────────────────────────────────────────────────── */
-.detail-save-btn {
-  position: absolute;
-  right: 26.5%;
-  bottom: 18%;
-  font-family: 'Ruge Boogie', cursive;
-  font-size: clamp(0.7rem, 1.5vw, 1rem);
-  letter-spacing: 0.06em;
-  background: rgb(19, 81, 142);
-  border: 2px solid rgb(63, 122, 181);
-  color: #e7f6ff;
-  border-radius: 20px;
-  padding: 0.4em 1.4em;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  flex-shrink: 0;
+  color: var(--text-muted);
 }
 
-.detail-save-btn:hover {
-  background: rgba(50, 99, 151, 0.768);
-  border-color: rgba(58, 90, 122, 0.7);
+/* Favorite uses its own pink accent rather than the system's blue -
+   a heart being blue reads oddly, pink/red is the expected association. */
+.favorite-btn.favorite-active {
+  color: #e85d75;
+  box-shadow: inset 3px 3px 8px rgba(0, 0, 0, 0.35), inset -3px -3px 8px rgba(232, 93, 117, 0.12);
+}
+
+.detail-category-badge {
+  align-self: flex-start;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent-1);
+  background: rgba(107, 156, 199, 0.15);
+  border-radius: 20px;
+  padding: 4px 12px;
+}
+
+.detail-title {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 600;
+  font-size: clamp(1.5rem, 3vw, 2.4rem);
+  color: var(--text);
+  margin: 0 0 4px;
+  line-height: 1.15;
+}
+
+.detail-status-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.status-pill {
+  border-radius: 20px;
+  border: none;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  font-family: 'Quicksand', sans-serif;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: background 0.4s ease, color 0.4s ease;
+}
+
+/* Completed gets its own green treatment instead of the generic accent
+   blue - completing something should feel like a distinct little win. */
+.status-pill.status-pill-completed {
+  background: linear-gradient(145deg, #4caf7d, #1f7a4d) !important;
+  color: #fff !important;
+}
+
+.status-check-icon {
+  display: inline-flex;
+  opacity: 0;
+  transform: scale(0);
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.status-pill-completed .status-check-icon {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.detail-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.star-row {
+  display: flex;
+  gap: 2px;
+}
+
+.star-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  color: var(--text-muted);
+  display: flex;
+}
+
+.star-filled {
+  color: #f5b942;
+}
+
+.star-empty {
+  color: var(--text-muted);
+}
+
+.star-pop {
+  animation: starPop 0.4s ease;
+}
+
+@keyframes starPop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.4) rotate(8deg); }
+  100% { transform: scale(1); }
+}
+
+.detail-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 6px;
+}
+
+.detail-input,
+.detail-textarea {
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  font-family: 'Quicksand', sans-serif;
+  box-sizing: border-box;
+}
+
+.detail-input:focus,
+.detail-textarea:focus {
+  outline: none;
+}
+
+.detail-textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.detail-save-btn {
+  align-self: flex-start;
+  margin-top: 12px;
+  background: linear-gradient(145deg, var(--accent-1), var(--accent-2));
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 26px;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 .detail-save-btn.detail-save-done {
-  background: rgba(50, 153, 76, 0.826);
-  border-color: rgb(16, 96, 36);
-  color: #dffce7;
+  background: linear-gradient(145deg, #4caf7d, #1f7a4d);
 }
 
-/* ── MOBILE — swap bg image and override all hotspot positions ──────────────── */
-@media (max-width: 600px) {
-  .detail-page {
-    aspect-ratio: unset;
-    min-height: 100svh;         /* fill full screen height */
-    height: 100svh;
+/* ── MOBILE ── */
+@media (max-width: 640px) {
+  .detail-card {
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
   }
 
-  .detail-bg {
-    content: url('/room/shelf-mobile.png');
-    object-fit: cover;
-    object-position: top;  
+  .detail-poster {
+    width: 180px;
+    height: 260px;
   }
 
-  /* Poster — blue rect top center */
-  .detail-poster-zone {
-    left: 33.2% !important;
-    top: 19.8% !important;
-    width: 32% !important;
-    height: 21.6% !important;
+  .detail-info-col {
+    width: 100%;
+    align-items: center;
+    text-align: center;
   }
 
-  /* Title — below poster area */
-  .detail-title-zone {
-    left: 18% !important;
-    top: 40.2% !important;
-    width: 70% !important;
-    height: 10% !important;
-  }
-  .detail-title-text {
-  font-size: clamp(0.85rem, 5vw, 4rem);
-}
-
-  /* Category */
-  .detail-category-zone {
-    left: 25% !important;
-    top: 46% !important;
-    width: 65% !important;
-    height: 10% !important;
-  }
-  .detail-value {
-    font-size: clamp(0.85rem, 5vw, 4rem);
+  .detail-top-row {
+    flex-direction: column;
+    gap: 10px;
   }
 
-  /* Status — 4 stamps in a row after Status: label */
-  .detail-status-zone {
-    left: 22% !important;
-    top: 55.8% !important;
-    width: 65% !important;
-    height: 3% !important;
-    gap: 13% !important;
-  }
-  .stamp-label {
-
-  top: 100%;              /* sits just below the box */
-  left: 46%;
-  margin-top: 10px;
-  font-size: clamp(0.5rem, 1.8vw, 1rem);
-
-}
-
-  /* Genre */
-  .detail-genre-zone {
-    left: 15% !important;
-    top: 64% !important;
-    width: 72% !important;
-    height: 6% !important;
+  .detail-status-row,
+  .detail-rating-row {
+    justify-content: center;
   }
 
-  /* Your Thoughts */
-  .detail-thoughts-zone {
-    left: 15% !important;
-    top: 75% !important;
-    width: 73% !important;
-    height: 6% !important;
-  }
-
-  /* Save button */
+  .detail-input,
+  .detail-textarea,
   .detail-save-btn {
-    right: 45% !important;
-    bottom: 14.5% !important;
-  }
-  .detail-inline-input,
-.detail-thoughts-input {
-  font-size: clamp(0.65rem, 4vw, 8rem);
- 
-}
-
-  /* Labels always visible on mobile */
-  .stamp-label {
-    font-size: clamp(0.4rem, 2.2vw, 0.65rem) !important;
+    align-self: stretch;
   }
 }

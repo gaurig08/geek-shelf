@@ -1,27 +1,26 @@
 .search-results {
   padding: 20px;
-  
 }
 
 .results-heading {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 600;
   font-size: 1.4rem;
-  color: #fff;
+  color: var(--text);
   margin-bottom: 10px;
 }
 
 .results-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 20px;
+  gap: 32px;
   justify-items: center;
   padding-bottom: 40px;
 }
 
-
 .no-results {
-  color: #ccc;
+  color: var(--text-muted);
   font-size: 1.1rem;
   text-align: center;
+  font-family: 'Quicksand', sans-serif;
 }
-
-  

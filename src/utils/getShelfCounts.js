@@ -9,7 +9,7 @@ export const getShelfCounts = async () => {
   const shelfRef = collection(db, "users", user.uid, "shelf");
   const snapshot = await getDocs(shelfRef);
 
-  const counts = { Movies: 0, Series: 0, Book: 0, Anime: 0 };
+  const counts = { Movie: 0, Series: 0, Book: 0, Anime: 0 };
 
   snapshot.forEach((doc) => {
     const data = doc.data();

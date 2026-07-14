@@ -1,0 +1,58 @@
+.ui-dropdown {
+  position: relative;
+  display: inline-block;
+  font-family: 'Quicksand', sans-serif;
+}
+
+.ui-dropdown-btn {
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.ui-dropdown-chevron {
+  transition: transform 0.25s ease;
+  font-size: 12px;
+}
+.ui-dropdown-btn.open .ui-dropdown-chevron {
+  transform: rotate(180deg);
+}
+
+.ui-dropdown-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  min-width: 180px;
+  border-radius: 20px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 20;
+}
+.ui-dropdown-panel.open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.ui-dropdown-option {
+  padding: 10px 16px;
+  border-radius: 14px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.ui-dropdown-option:hover {
+  background: rgba(120, 150, 190, 0.15);
+}

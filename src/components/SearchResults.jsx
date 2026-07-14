@@ -48,7 +48,6 @@ const SearchResults = ({ results, category, onInfoClick, type }) => {
               return (
                 <ItemCard
                   key={id}
-                  item={item}
                   image={image}
                   title={title}
                   onAdd={() =>

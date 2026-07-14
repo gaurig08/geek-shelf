@@ -4,7 +4,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(15, 15, 30, 0.8);
+  background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(6px);
   display: flex;
   justify-content: center;
@@ -16,8 +16,8 @@
 }
 
 .modal {
-  background: linear-gradient(to bottom, #1d1d5a, #28154a);
-  color: #d2d4e8;
+  background: var(--surface);
+  color: var(--text);
   padding: 2rem;
   max-width: 420px;
   width: 100%;
@@ -26,28 +26,24 @@
   align-items: center;
   gap: 1.2rem;
   scroll-behavior: smooth;
-  border-radius: 20px;
+  border-radius: 28px;
   position: relative;
-  box-shadow: 0 0 25px rgba(180, 140, 255, 0.3),
-              0 0 10px rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.poster-container {
+.modal-poster-container {
   width: 180px !important;
   height: 270px;
   border-radius: 1rem;
   overflow: hidden;
-  background: url('/tile-texture.png') repeat;
+  background: var(--surface-alt);
+  box-shadow: inset 4px 4px 10px var(--shadow-dark), inset -4px -4px 10px var(--shadow-light);
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
   transition: transform 0.3s ease;
 }
 
-.poster-container:hover {
+.modal-poster-container:hover {
   transform: scale(1.02);
 }
 
@@ -66,38 +62,69 @@
   text-align: left;
   padding: 0 0.5rem;
   scroll-behavior: smooth;
+  font-family: 'Quicksand', sans-serif;
 }
 
 .modal-details h2 {
   font-size: 1.6rem;
+  font-weight: 600;
   text-align: center;
-  font-family: 'Cinzel Decorative', cursive;
-  color: #e7d7ff;
+  font-family: 'Quicksand', sans-serif;
+  color: var(--text);
   margin-bottom: 0.6rem;
-  text-shadow: 0 0 4px rgba(255, 255, 255, 0.1);
 }
 
 .summary {
   font-size: 0.95rem;
   line-height: 1.5;
-  color: #dcd3f3;
+  color: var(--text-muted);
   padding-top: 0.5rem;
 }
 
 .close-button {
   position: absolute;
-  top: 10px;
-  right: 12px;
-  background: none;
+  top: 14px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--surface);
   border: none;
-  color: #fff;
-  font-size: 1.5rem;
+  color: var(--text-muted);
+  font-size: 1.3rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  transition: color 0.3s ease;
+  box-shadow: 4px 4px 10px var(--shadow-dark), -4px -4px 10px var(--shadow-light);
+  transition: color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .close-button:hover {
-  color: #d8b4fe;
+  color: var(--text);
+  box-shadow: 6px 6px 14px var(--shadow-dark-hover), -6px -6px 14px var(--shadow-light-hover);
+}
+
+.modal-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 160px;
+}
+
+.spinner {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  border: 3px solid rgba(120, 150, 190, 0.25);
+  border-top-color: var(--accent-1);
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 /* Responsive */
@@ -107,9 +134,8 @@
     max-width: 90%;
   }
 
-  .poster-container {
+  .modal-poster-container {
     width: 160px !important;
     height: 240px;
   }
 }
-

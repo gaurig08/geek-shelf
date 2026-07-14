@@ -1,307 +1,215 @@
 /* ProfilePanel.css */
-@import url('https://fonts.googleapis.com/css2?family=Ruge+Boogie&display=swap');
 
-/* ── PANEL ──────────────────────────────────────────────────────────────────── */
 .profile-panel {
   position: fixed;
   top: 0;
   right: -340px;
   height: 100vh;
+  height: 100dvh; /* mobile browser address-bar fix */
   width: 320px;
+  max-width: 90vw;
+  padding: 32px 24px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  gap: 4px;
+  overflow-y: auto;
+  transition: right 0.35s ease;
   z-index: 200;
-  transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-
-  /* Cozy dark rose background */
-  background: linear-gradient(
-    160deg,
-    #1e0a12 0%,
-    #2a0f1a 40%,
-    #1a0a10 100%
-  );
-  border-left: 1px solid rgba(255, 143, 171, 0.2);
-  box-shadow: -8px 0 40px rgba(0, 0, 0, 0.6), -2px 0 16px rgba(255, 100, 140, 0.08);
+  font-family: 'Quicksand', sans-serif;
 }
 
 .profile-panel.open {
   right: 0;
 }
 
-/* ── CLOSE BUTTON ───────────────────────────────────────────────────────────── */
 .close-btn {
   position: absolute;
-  top: 16px;
-  right: 16px;
-  background: rgba(255, 143, 171, 0.1);
-  border: 1px solid rgba(255, 143, 171, 0.25);
+  top: 20px;
+  right: 20px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  font-size: 20px;
-  color: #ffb3c6;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: var(--text);
+}
+
+/* ── HEADER ── */
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  margin-bottom: 12px;
+}
+
+.profile-img {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+}
+
+.profile-name {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin: 4px 0 0;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.profile-name-input {
+  font-weight: 600;
+  font-size: 1.1rem;
+  text-align: center;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--text-muted);
+  color: var(--text);
+  font-family: inherit;
+  outline: none;
+}
+
+.profile-email {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.panel-divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(120, 150, 190, 0.15);
+  margin: 16px 0;
+  flex-shrink: 0;
+}
+
+.profile-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.section-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* ── PREFERENCES ── */
+.pref-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+.room-picker {
+  display: flex;
+  gap: 10px;
+}
+
+.room-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s ease, color 0.2s ease;
-  line-height: 1;
-  z-index: 10;
-  pointer-events: all;
+  font-size: 18px;
 }
 
-.close-btn:hover {
-  background: rgba(255, 143, 171, 0.25);
-  color: #ffd6e0;
-}
-
-/* ── HEADER ─────────────────────────────────────────────────────────────────── */
-.profile-header {
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 72px 20px 24px;
-  border-bottom: 1px solid rgba(255, 143, 171, 0.12);
-  position: relative;
-}
-
-/* Subtle top glow */
-.profile-header::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 200px;
-  height: 120px;
-  background: radial-gradient(ellipse, rgba(255, 100, 140, 0.1) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-/* ── AVATAR EMOJI ───────────────────────────────────────────────────────────── */
-.profile-img {
-  font-size: 62px;
-  margin-bottom: 12px;
-  filter: drop-shadow(0 0 12px rgba(255, 180, 100, 0.5));
-  cursor: default;
-  user-select: none;
-  transition: filter 0.2s ease;
-}
-
-.profile-img:hover {
-  filter: drop-shadow(0 0 20px rgba(255, 200, 100, 0.7));
-}
-
-/* ── NAME ───────────────────────────────────────────────────────────────────── */
-.profile-name {
-  font-family: 'Ruge Boogie', cursive;
-  font-size: 1.75rem;
-  letter-spacing: 0.08em;
-  color: #ffd6e0;
-  margin: 4px 0;
-  cursor: pointer;
-  text-align: center;
-  transition: color 0.2s ease;
-  text-shadow: 0 0 8px rgba(255, 143, 171, 0.2);
-}
-
-.profile-name:hover {
-  color: #ffe8f0;
-  text-shadow: 0 0 14px rgba(255, 143, 171, 0.4);
-}
-
-.profile-name-input {
-  font-family: 'Ruge Boogie', cursive;
-  font-size: 1.4rem;
-  letter-spacing: 0.08em;
-  padding: 6px 12px;
-  border-radius: 10px;
-  border: 1.5px solid rgba(255, 143, 171, 0.4);
-  background: rgba(255, 143, 171, 0.08);
-  color: #ffd6e0;
-  text-align: center;
-  width: 82%;
-  outline: none;
-}
-
-.profile-name-input:focus {
-  border-color: rgba(255, 143, 171, 0.7);
-  box-shadow: 0 0 10px rgba(255, 143, 171, 0.15);
-}
-
-/* ── EMAIL ──────────────────────────────────────────────────────────────────── */
-.profile-email {
-  font-family: 'Comic Sans MS', 'Comic Sans', cursive;
-  font-size: 0.82rem;
-  color: #8a5060;
-  margin-top: 4px;
-  letter-spacing: 0.02em;
-}
-
-/* ── SCROLLABLE CONTENT ─────────────────────────────────────────────────────── */
-.profile-content {
-  flex: 1;
-  overflow-y: auto;
-  padding: 1.25rem 1.25rem 0.5rem;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255, 143, 171, 0.2) transparent;
-}
-
-.profile-content::-webkit-scrollbar { width: 4px; }
-.profile-content::-webkit-scrollbar-track { background: transparent; }
-.profile-content::-webkit-scrollbar-thumb {
-  background: rgba(255, 143, 171, 0.25);
-  border-radius: 4px;
-}
-
-/* ── EMOJI PICKER ───────────────────────────────────────────────────────────── */
-.emoji-picker-container {
-  text-align: center;
-  margin-bottom: 1.25rem;
-}
-
+/* ── AVATAR PICKER ── */
 .choose-emoji-btn {
-  font-family: 'Ruge Boogie', cursive;
-  font-size: 1.1rem;
-  letter-spacing: 0.06em;
-  color: #ffb3c6;
-  background: rgba(255, 143, 171, 0.1);
-  border: 1px solid rgba(255, 143, 171, 0.28);
-  border-radius: 20px;
-  padding: 0.45rem 1.2rem;
-  cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease;
   width: 100%;
-}
-
-.choose-emoji-btn:hover {
-  background: rgba(255, 143, 171, 0.2);
-  border-color: rgba(255, 143, 171, 0.5);
-  color: #ffd6e0;
+  padding: 10px;
+  border-radius: 16px;
+  border: none;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text);
+  cursor: pointer;
 }
 
 .emoji-picker-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 0.4rem;
-  margin-top: 0.75rem;
-  background: rgba(255, 143, 171, 0.05);
-  border: 1px solid rgba(255, 143, 171, 0.12);
-  border-radius: 14px;
-  padding: 0.75rem;
+  gap: 8px;
+  margin-top: 4px;
 }
 
 .emoji-option {
-  font-size: 1.6rem;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 12px;
+  border: none;
+  font-size: 20px;
   cursor: pointer;
-  text-align: center;
-  border-radius: 8px;
-  padding: 4px;
-  transition: transform 0.15s ease, background 0.15s ease;
-}
-
-.emoji-option:hover {
-  transform: scale(1.25);
-  background: rgba(255, 143, 171, 0.15);
-}
-
-/* ── SHELF STATS ────────────────────────────────────────────────────────────── */
-.shelf-stats {
-  margin: 0.5rem 0 1rem;
-  border: 1px solid rgba(255, 143, 171, 0.14);
-  border-radius: 16px;
-  padding: 1rem 1.25rem;
-  background: rgba(255, 143, 171, 0.04);
   display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
-
-.shelf-stats p {
-  font-family: 'Comic Sans MS', 'Comic Sans', cursive;
-  font-size: 0.95rem;
-  color: #d4849a;
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin: 0;
-  padding: 0.35rem 0;
-  border-bottom: 1px solid rgba(255, 143, 171, 0.08);
+  justify-content: center;
 }
 
-.shelf-stats p:last-child {
-  border-bottom: none;
+/* ── STATS ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
 }
 
-/* Number highlight */
-.stat-count {
-  color: #ffb3c6;
-  font-family: 'Ruge Boogie', cursive;
-  font-size: 1.15rem;
-  text-shadow: 0 0 6px rgba(255, 143, 171, 0.3);
-}
-
-/* ── SECTION LABEL ──────────────────────────────────────────────────────────── */
-.section-label {
-  font-family: 'Comic Sans MS', cursive;
-  font-size: 0.72rem;
-  color: #6a3545;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  margin-bottom: 0.5rem;
-  padding-left: 2px;
-}
-
-/* ── LOGOUT ─────────────────────────────────────────────────────────────────── */
-.logout-container {
-  flex-shrink: 0;
-  padding: 14px 1.25rem 20px;
-  border-top: 1px solid rgba(255, 143, 171, 0.12);
+.stat-tile {
+  border-radius: 16px;
+  padding: 12px 8px;
   text-align: center;
+}
+
+.stat-tile-icon { font-size: 18px; margin-bottom: 4px; }
+.stat-tile-count { font-weight: 600; font-size: 1.1rem; color: var(--text); }
+.stat-tile-label { font-size: 0.7rem; color: var(--text-muted); }
+
+/* ── FOOTER ── */
+.logout-container {
+  margin-top: auto;
+  padding-top: 16px;
+  flex-shrink: 0;
 }
 
 .logout-btn {
-  font-family: 'Ruge Boogie', cursive;
-  font-size: 1.1rem;
-  letter-spacing: 0.08em;
-  border: 1.5px solid rgba(255, 80, 100, 0.4);
-  background: rgba(180, 30, 50, 0.25);
-  color: #ff8fa0;
-  border-radius: 12px;
-  padding: 0.65rem 0;
-  cursor: pointer;
   width: 100%;
-  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  padding: 12px;
+  border-radius: 999px;
+  border: none;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--danger);
+  cursor: pointer;
 }
 
-.logout-btn:hover {
-  background: rgba(220, 40, 60, 0.35);
-  color: #ffc0cb;
-  border-color: rgba(255, 80, 100, 0.65);
+/* ── BODY LOCK ── */
+.no-scroll {
+  overflow: hidden;
 }
 
-/* ── MOBILE ─────────────────────────────────────────────────────────────────── */
-@media (max-width: 400px) {
+/* ── RESPONSIVE ── */
+@media (max-width: 480px) {
   .profile-panel {
     width: 100%;
     right: -100%;
   }
-
   .profile-panel.open {
     right: 0;
   }
-
-  .profile-name {
-    font-size: 9rem;
-  }
-
-  .emoji-picker-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-/* ── BODY LOCK ──────────────────────────────────────────────────────────────── */
-.no-scroll {
-  overflow: hidden;
 }

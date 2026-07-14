@@ -1,0 +1,107 @@
+/* src/theme.css
+ *
+ * The single source of truth for the day/night design system locked in
+ * during the UI redesign brainstorm. Every color/shadow value used
+ * anywhere in the app should reference one of these variables instead of
+ * hardcoding a hex value - that's what lets day/night actually work
+ * everywhere at once instead of page-by-page.
+ *
+ * Applied via a `data-theme="night"|"day"` attribute on <html>, toggled
+ * by ThemeProvider. Defaults to night (matches the site's original look).
+ */
+
+:root,
+:root[data-theme="night"] {
+  --bg-1: #171a3d;
+  --bg-2: #2a1f4d;
+  --surface: #232752;
+  --surface-alt: #2a2f63; /* slightly lighter, for stat tiles / nested cards */
+  --text: #f0f8ff;
+  --text-muted: #cfd8e3;
+
+  --accent-1: #4a7ba8;
+  --accent-2: #052f4f;
+
+  /* Neumorphic shadow pair - dark shadow, then light "highlight" shadow.
+     Keep the highlight very subtle in night mode - too much white breaks
+     the illusion and looks like a mistake rather than soft lighting. */
+  --shadow-dark: rgba(0, 0, 0, 0.55);
+  --shadow-light: rgba(255, 255, 255, 0.025);
+  --shadow-dark-hover: rgba(0, 0, 0, 0.6);
+  --shadow-light-hover: rgba(255, 255, 255, 0.035);
+
+  --danger: #ff8f8f;
+}
+
+:root[data-theme="day"] {
+  --bg-1: #faf3ea;
+  --bg-2: #faf3ea;
+  --surface: #f3ead9;
+  --surface-alt: #ede2cd;
+  --text: #2b2420;
+  --text-muted: #6b5f52;
+
+  --accent-1: #4a7ba8;
+  --accent-2: #052f4f;
+
+  --shadow-dark: rgba(0, 0, 0, 0.18);
+  --shadow-light: rgba(255, 255, 255, 0.55);
+  --shadow-dark-hover: rgba(0, 0, 0, 0.22);
+  --shadow-light-hover: rgba(255, 255, 255, 0.65);
+
+  --danger: #d94f4f;
+}
+
+/* ── Reusable neumorphic surface classes ──
+   Any button/card/dropdown in the app should use these instead of
+   redefining their own shadow values. */
+
+.neu-surface {
+  background: var(--surface);
+  color: var(--text);
+  transition: background 0.3s ease, color 0.3s ease, box-shadow 0.2s ease;
+}
+
+.neu-raised {
+  box-shadow: 6px 6px 14px var(--shadow-dark), -6px -6px 14px var(--shadow-light);
+}
+
+.neu-raised:hover {
+  box-shadow: 10px 10px 22px var(--shadow-dark-hover), -10px -10px 22px var(--shadow-light-hover);
+  transform: translateY(-2px);
+}
+
+.neu-raised:active {
+  box-shadow: inset 4px 4px 10px var(--shadow-dark), inset -4px -4px 10px var(--shadow-light);
+  transform: scale(0.98);
+}
+
+.neu-inset {
+  background: linear-gradient(145deg, var(--accent-2), var(--accent-1));
+  color: #fff;
+  box-shadow: inset 3px 3px 8px rgba(0, 0, 0, 0.35), inset -3px -3px 8px rgba(255, 255, 255, 0.1);
+}
+
+.neu-inset:hover {
+  filter: brightness(1.1);
+}
+
+/* Plain recessed surface for text inputs - "typing into a carved-in
+   surface", but WITHOUT the accent color (that's reserved for
+   selected/active states, would be semantically wrong on a plain input). */
+.neu-input {
+  background: var(--surface);
+  color: var(--text);
+  border: none;
+  box-shadow: inset 4px 4px 10px var(--shadow-dark), inset -4px -4px 10px var(--shadow-light);
+}
+
+.neu-input::placeholder {
+  color: var(--text-muted);
+}
+
+.neu-input:focus-within,
+.neu-input:focus {
+  outline: none;
+  box-shadow: inset 5px 5px 12px var(--shadow-dark), inset -5px -5px 12px var(--shadow-light);
+}

@@ -3,25 +3,34 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../auth/AuthProvider";
 import { db } from "../firebase";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { useTheme } from "../theme/ThemeProvider";
+import Toggle from "./ui/Toggle";
 import "./ProfilePanel.css";
 import { getShelfCounts } from "../utils/getShelfCounts";
 
 const STATS = [
-  { key: "Books",  icon: "📚", label: "Books"  },
-  { key: "Movies", icon: "🎬", label: "Movies" },
+  { key: "Book",   icon: "📚", label: "Books"  },
+  { key: "Movie",  icon: "🎬", label: "Movies" },
   { key: "Series", icon: "📺", label: "Series" },
   { key: "Anime",  icon: "🌀", label: "Anime"  },
 ];
 
+// Placeholder for the room-theme system - only one room exists today.
+// This list becomes real once more rooms are designed; the UI already
+// supports selecting between multiple, it's just not populated yet.
+const ROOMS = [{ key: "default", icon: "🛏️", label: "Cozy Room" }];
+
 const ProfilePanel = ({ isOpen, onClose }) => {
   const { currentUser, logout } = useContext(AuthContext);
+  const { theme, toggleTheme } = useTheme();
 
   const [emoji, setEmoji]               = useState("🦊");
   const [displayName, setDisplayName]   = useState("");
   const [editingName, setEditingName]   = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [room, setRoom] = useState("default");
   const [categoryCounts, setCategoryCounts] = useState({
-    Anime: 0, Movies: 0, Series: 0, Books: 0,
+    Anime: 0, Movie: 0, Series: 0, Book: 0,
   });
 
   const emojiOptions = ["🦊","🐉","🧙‍♀️","🌸","🌙","🐱","🦄","👻","✨","🐺"];
@@ -43,6 +52,7 @@ const ProfilePanel = ({ isOpen, onClose }) => {
         const data = userSnap.data();
         setEmoji(data.emoji || "🦊");
         setDisplayName(data.displayName || currentUser.displayName || currentUser.email.split("@")[0]);
+        setRoom(data.room || "default");
       } else {
         await setDoc(userRef, {
           displayName: currentUser.displayName || currentUser.email.split("@")[0],
@@ -55,20 +65,16 @@ const ProfilePanel = ({ isOpen, onClose }) => {
     fetchProfile();
   }, [currentUser]);
 
-  // Fetch shelf counts
+  // Fetch shelf counts - refetch every time the panel opens, not just once
+  // at mount, so recently-added items actually show up in the counts.
   useEffect(() => {
-    if (!currentUser) return;
+    if (!currentUser || !isOpen) return;
     const fetchShelfCounts = async () => {
       const counts = await getShelfCounts();
-      setCategoryCounts({
-        Movies: counts.Movies || 0,
-        Series: counts.Series || 0,
-        Books:  counts.Book   || 0,
-        Anime:  counts.Anime  || 0,
-      });
+      setCategoryCounts(counts);
     };
     fetchShelfCounts();
-  }, [currentUser]);
+  }, [currentUser, isOpen]);
 
   const handleEmojiChange = async (newEmoji) => {
     setEmoji(newEmoji);
@@ -81,19 +87,24 @@ const ProfilePanel = ({ isOpen, onClose }) => {
     await updateDoc(doc(db, "users", currentUser.uid), { displayName });
   };
 
+  const handleRoomChange = async (key) => {
+    setRoom(key);
+    await updateDoc(doc(db, "users", currentUser.uid), { room: key });
+  };
+
   const handleLogout = async () => {
     await logout();
     onClose();
   };
 
   return (
-    <div className={`profile-panel ${isOpen ? "open" : ""}`}>
+    <div className={`neu-surface profile-panel ${isOpen ? "open" : ""}`}>
 
-      <button className="close-btn" onClick={onClose}>×</button>
+      <button className="neu-surface neu-raised close-btn" onClick={onClose} aria-label="Close">×</button>
 
       {/* ── HEADER ── */}
       <div className="profile-header">
-        <div className="profile-img">{emoji}</div>
+        <div className="neu-surface neu-raised profile-img">{emoji}</div>
 
         {editingName ? (
           <input
@@ -115,49 +126,80 @@ const ProfilePanel = ({ isOpen, onClose }) => {
         <p className="profile-email">{currentUser?.email}</p>
       </div>
 
-      {/* ── CONTENT ── */}
-      <div className="profile-content">
+      <div className="panel-divider" />
 
-        {/* Emoji picker */}
-        <div className="emoji-picker-container">
-          <button
-            className="choose-emoji-btn"
-            onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-          >
-            {showEmojiPicker ? "Hide Emoji Picker ▲" : "Choose Avatar Emoji ▾"}
-          </button>
+      {/* ── PREFERENCES ── */}
+      <div className="profile-section">
+        <p className="section-label">Preferences</p>
 
-          {showEmojiPicker && (
-            <div className="emoji-picker-grid">
-              {emojiOptions.map((em) => (
-                <span
-                  key={em}
-                  className="emoji-option"
-                  onClick={() => handleEmojiChange(em)}
-                >
-                  {em}
-                </span>
-              ))}
-            </div>
-          )}
+        <div className="pref-row">
+          <span>Appearance</span>
+          <Toggle isDay={theme === "day"} onToggle={toggleTheme} size="sm" />
         </div>
 
-        {/* Shelf stats */}
-        <p className="section-label">My Shelf</p>
-        <div className="shelf-stats">
+        <div className="pref-row">
+          <span>Room</span>
+          <div className="room-picker">
+            {ROOMS.map((r) => (
+              <button
+                key={r.key}
+                className={`neu-surface room-thumb ${room === r.key ? "neu-inset selected" : "neu-raised"}`}
+                onClick={() => handleRoomChange(r.key)}
+                title={r.label}
+                aria-label={r.label}
+              >
+                {r.icon}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="panel-divider" />
+
+      {/* ── AVATAR PICKER ── */}
+      <div className="profile-section">
+        <button
+          className="neu-surface neu-raised choose-emoji-btn"
+          onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+        >
+          {showEmojiPicker ? "Hide Avatar Picker ▲" : "Choose Avatar ▾"}
+        </button>
+
+        {showEmojiPicker && (
+          <div className="emoji-picker-grid">
+            {emojiOptions.map((em) => (
+              <button
+                key={em}
+                className={`neu-surface emoji-option ${em === emoji ? "neu-inset selected" : "neu-raised"}`}
+                onClick={() => handleEmojiChange(em)}
+              >
+                {em}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div className="panel-divider" />
+
+      {/* ── SHELF STATS ── */}
+      <div className="profile-section">
+        <p className="section-label">Your shelf</p>
+        <div className="stats-grid">
           {STATS.map(({ key, icon, label }) => (
-            <p key={key}>
-              <span>{icon} {label}</span>
-              <span className="stat-count">{categoryCounts[key]}</span>
-            </p>
+            <div key={key} className="neu-surface stat-tile">
+              <div className="stat-tile-icon">{icon}</div>
+              <div className="stat-tile-count">{categoryCounts[key]}</div>
+              <div className="stat-tile-label">{label}</div>
+            </div>
           ))}
         </div>
-
       </div>
 
       {/* ── FOOTER ── */}
       <div className="logout-container">
-        <button className="logout-btn" onClick={handleLogout}>
+        <button className="neu-surface neu-raised logout-btn" onClick={handleLogout}>
           Log Out
         </button>
       </div>

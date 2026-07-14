@@ -1,7 +1,8 @@
 import { db } from "../firebase";
-import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
-import { fetchGenres } from "./fetchGenreNames";
+import { collection, addDoc, query, where, getDocs, serverTimestamp } from "firebase/firestore";
+import { extractItemGenres } from "./extractItemGenres";
 import { getAuth } from "firebase/auth";
+import { DEFAULT_STATUS } from "./shelfStatuses";
 
 const addToShelf = async (item, category) => {
   const user = getAuth().currentUser;
@@ -33,18 +34,13 @@ const addToShelf = async (item, category) => {
         item?.volumeInfo?.imageLinks?.thumbnail ||
         "https://via.placeholder.com/150?text=No+Image";
 
-  let genres = [];
-  try {
-    if (category === "Movies" || category === "Series") {
-      genres = await fetchGenres(category, "movie");
-    } else if (category === "Books") {
-      genres = await fetchGenres(category, "book");
-    } else if (category === "Anime") {
-      genres = await fetchGenres(category, "anime");
-    }
-  } catch (error) {
-    console.warn("Genre fetch failed, continuing without genre.");
-  }
+  // The item's ID in its source API (TMDB movie/tv id, MAL id for anime,
+  // Google Books volume id). Needed to call each source's own
+  // recommendations endpoint later - without this we can't ask "what did
+  // TMDB/MAL recommend based on this specific title".
+  const externalId = item?.id ?? item?.mal_id ?? null;
+
+  const genres = await extractItemGenres(item, category);
 
   try {
     // ✅ Check if item already exists in shelf
@@ -62,9 +58,12 @@ const addToShelf = async (item, category) => {
       title,
       poster: posterURL,
       category,
-      status: "Planning",
+      status: DEFAULT_STATUS,
+      favorite: false,
       summary,
       genre: genres.join(", "),
+      externalId,
+      createdAt: serverTimestamp(),
     });
 
     alert("Added to shelf!");

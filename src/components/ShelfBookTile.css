@@ -1,0 +1,94 @@
+.shelf-book {
+  position: relative;
+  width: 160px;
+  height: 240px;
+  flex-shrink: 0;
+  z-index: 1;
+  border-radius: 4px 8px 8px 4px;
+  box-shadow: 3px 6px 14px rgba(0, 0, 0, 0.35);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  cursor: pointer;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+}
+
+.shelf-book:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 16px 26px rgba(0, 0, 0, 0.4);
+  z-index: 5;
+}
+
+.shelf-book-title-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 9px 8px 7px;
+  font-size: 0.85rem;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.75), transparent);
+  line-height: 1.2;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+
+  /* keep long titles readable in a small overlay */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.shelf-book:hover .shelf-book-title-overlay {
+  opacity: 1;
+}
+
+.shelf-book-delete-btn {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity 0.2s ease, transform 0.2s ease, background 0.2s ease;
+}
+
+.shelf-book:hover .shelf-book-delete-btn {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.shelf-book-delete-btn:hover {
+  background: #e85d5d;
+  transform: scale(1.15);
+}
+
+/* ── TOUCH DEVICES: hover doesn't exist, so hover-reveal alone would
+   make delete (and the title) permanently unreachable on phones/tablets.
+   Show both always, just more subtly, instead of requiring a hover
+   state that can never happen there. ── */
+@media (hover: none) {
+  .shelf-book-delete-btn {
+    opacity: 1;
+    transform: scale(1);
+    background: rgba(0, 0, 0, 0.45);
+    width: 26px;
+    height: 26px;
+  }
+
+  .shelf-book-title-overlay {
+    opacity: 1;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.7), transparent 70%);
+  }
+}

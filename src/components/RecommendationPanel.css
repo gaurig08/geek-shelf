@@ -1,0 +1,74 @@
+.recommendation-panel {
+  margin: 32px 0;
+  padding: 0 16px;
+  color: var(--text);
+}
+
+.recommendation-heading {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--text);
+  font-family: 'Quicksand', sans-serif;
+}
+
+.recommendation-section {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.recommendation-subheading {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.recommendation-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.recommendation-row::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── SCROLL ARROWS ─────────────────────────────────────────────────────────── */
+.scroll-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-30%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 4;
+}
+
+.scroll-arrow-left {
+  left: -6px;
+}
+
+.scroll-arrow-right {
+  right: -6px;
+}
+
+@media (max-width: 600px) {
+  .scroll-arrow {
+    display: none;
+  }
+}
+
+.recommendation-empty {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}

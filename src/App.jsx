@@ -9,7 +9,6 @@ import Login from "./auth/Login";
 import Signup from "./auth/Signup";
 import NavBar from "./components/NavBar";
 import ProtectedRoute from "./auth/PrivateRoute";
-import { AuthProvider } from "./auth/AuthProvider";
 import "./styles.css";
 import PageTransition from "./components/PageTransition";
 
@@ -20,7 +19,7 @@ const App = () => {
     location.pathname === "/login" || location.pathname === "/signup";
 
   return (
-    <AuthProvider>
+    <>
         {!isAuthPage && (
           <>
             <NavBar />
@@ -91,7 +90,7 @@ const App = () => {
             />
           </Routes>
         </AnimatePresence>
-    </AuthProvider>
+    </>
   );
 };
 

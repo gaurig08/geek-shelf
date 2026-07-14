@@ -1,42 +1,60 @@
-/* CategoryListPage.css */
+/* ShelfPage.css */
 @import url('https://fonts.googleapis.com/css2?family=Ruge+Boogie&display=swap');
 
 /* ── PAGE ──────────────────────────────────────────────────────────────────── */
+/* Placeholder background until real room-theme art exists (Axis 2) - for
+   now this follows day/night (Axis 1) so it's at least switchable. */
 .category-page {
   min-height: 100vh;
   width: 100%;
+  box-sizing: border-box;
 
-  background-attachment: fixed;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background:
+    radial-gradient(circle at 20% 5%, rgba(107, 156, 199, 0.10), transparent 45%),
+    radial-gradient(circle at 80% 15%, rgba(232, 93, 117, 0.08), transparent 40%),
+    var(--bg-1);
 
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* No justify-content: center — row position is controlled by margin-top below */
 
-  padding: 0;
-  overflow: hidden;
-  position: relative;
-  font-family: 'Ruge Boogie', cursive;
+  padding: 130px 4vw 40px;
+  font-family: 'Quicksand', sans-serif;
+  color: var(--text);
 }
 
 /* ── TITLE ─────────────────────────────────────────────────────────────────── */
 .category-title {
-  font-size: 60px;
-  color: #191212;
-  /*
-    margin-top pushes the title down to where your shelf sits in the bg image.
-    Tune this value to match your specific Canva design.
-    Start at 28vh and adjust up/down until it aligns with your shelf graphic.
-  */
-  margin-top: 130px;
-  margin-bottom: 60px;
-  text-align: center;
-  letter-spacing: 3px;
   font-family: 'Ruge Boogie', cursive;
-  text-shadow: 0 0px 0px rgba(96, 20, 20, 0.45);
+  font-size: clamp(26px, 5vw, 40px);
+  color: var(--text);
+  text-align: center;
+  letter-spacing: 2px;
+  margin: 0 0 20px;
+  flex-shrink: 0;
+  text-shadow: 1px 1px 2px var(--shadow-dark), -1px -1px 2px var(--shadow-light);
+}
+
+/* ── SHELF CONTROLS: SORT / FAVORITES ─────────────────────────────────────── */
+.shelf-controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+  width: 100%;
+}
+
+.favorites-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
   flex-shrink: 0;
 }
 
@@ -52,114 +70,6 @@
   flex-shrink: 0;
 }
 
-/* ── HORIZONTAL SCROLL ROW WRAPPER ────────────────────────────────────────── */
-.shelf-row-wrapper {
-  width: 100%;
-  overflow-x: auto;
-  overflow-y: visible;
-  padding: 1.5rem 4vw 2rem;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  flex-shrink: 0;
-}
-
-.shelf-row-wrapper::-webkit-scrollbar {
-  display: none;
-}
-
-/* ── THE ROW ITSELF ────────────────────────────────────────────────────────── */
-.shelf-row {
-  display: flex;
-  flex-direction: row;
-  gap: 2.5rem;
-  align-items: flex-end;
-  width: max-content;
-  padding-bottom: 1rem;
-}
-
-/* ── CARD ──────────────────────────────────────────────────────────────────── */
-.category-card {
-  position: relative;
-  flex-shrink: 0;
- 
-  width: clamp(110px, 14vw, 180px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.category-card-link {
-  text-decoration: none;
-  color: inherit;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* ── POSTER ────────────────────────────────────────────────────────────────── */
-.poster-container {
-  width: 100%;
-  aspect-ratio: 2 / 3;
-  border-radius: 0.65rem;
-  overflow: hidden;
-  background: #2a2a3a;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
-  transition: transform 0.22s ease, box-shadow 0.22s ease;
-}
-
-.category-card:hover .poster-container {
-  transform: translateY(-6px) scale(1.03);
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.55);
-}
-
-.poster-container img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* ── CARD TITLE ────────────────────────────────────────────────────────────── */
-.category-card h4 {
-  font-family: 'Comic Sans MS', 'Comic Sans', cursive;
-  font-size: 14px;
-  color: #4050ae;
-  text-align: center;
-  margin: 0.45rem 0 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 100%;
-  text-shadow: 0 1px 4px rgba(43, 22, 22, 0);
-}
-
-/* ── DELETE BUTTON ─────────────────────────────────────────────────────────── */
-.delete-icon {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  background: rgba(0, 0, 0, 0.65);
-  border: none;
-  border-radius: 50%;
-  padding: 7px;
-  cursor: pointer;
-  z-index: 3;
-  color: #ffffff;
-  transition: background 0.2s ease, transform 0.2s ease;
-  line-height: 0;
-  opacity: 0;
-}
-
-.category-card:hover .delete-icon {
-  opacity: 1;
-}
-
-.delete-icon:hover {
-  background: rgba(220, 60, 60, 0.85);
-  transform: scale(1.15);
-}
-
 /* ── EMPTY STATE ───────────────────────────────────────────────────────────── */
 .empty-shelf {
   display: flex;
@@ -167,95 +77,125 @@
   align-items: center;
   justify-content: center;
   padding: 4rem 2rem;
-  color: #fff9f9;
+  color: var(--text-muted);
   font-size: 1.2rem;
   text-align: center;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
 }
 
-/* ── TABLET (768px – 1150px) ───────────────────────────────────────────────── */
-@media (max-width: 1150px) {
-  .category-title {
-    font-size: 48px;
-    margin-top: 109px;
-    margin-bottom: -2px;
-  }
+/* ── SHELF SECTIONS (grouped by status) ───────────────────────────────────── */
+.shelf-section {
+  width: 100%;
+  max-width: 1100px;
+  margin-bottom: 40px;
+}
 
-  .shelf-row {
-    gap: 6rem;
-  }
+.shelf-recommendations-section {
+  margin-bottom: 50px;
+}
 
-  .category-card {
-    width: clamp(100px, 20vw, 155px);
-  }
-  .delete-icon {
-    opacity: 1;
-    right: -5px;
+.shelf-heading {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin-bottom: 4px;
+  padding-left: 6px;
+  color: var(--text);
+}
+
+.shelf-count {
+  font-weight: 500;
+  opacity: 0.5;
+  font-size: 0.85rem;
+  margin-left: 6px;
+}
+
+/* ── THE SHELF ITSELF ──────────────────────────────────────────────────────── */
+.shelf-track {
+  position: relative;
+  padding: 20px 20px 0;
+}
+
+.shelf-books {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  gap: 18px;
+  overflow-x: auto;
+  /* setting overflow-x forces overflow-y to also clip (a real CSS quirk
+     - you can't have one axis truly 'visible' while the other scrolls),
+     so top padding needs to cover the hover lift + the delete button
+     sitting near the top of each book, or both get cut off the moment
+     a book lifts on hover. */
+  padding: 20px 0 22px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.shelf-books::-webkit-scrollbar {
+  display: none;
+}
+
+/* the physical ledge - a warm wood tone in both day and night (just
+   deeper/richer at night), with a shadow lip so books look like
+   they're genuinely resting on it. Lives INSIDE .shelf-books (the
+   scrolling element) so it scrolls together with the books, and sits
+   IN FRONT of them (higher z-index) so items look planted into it
+   rather than floating in front of a separate bar. pointer-events:none
+   so clicks on the overlapping area still reach the book underneath. */
+.shelf-ledge {
+  position: absolute;
+  left: 0;
+  bottom: 18px;
+  height: 32px;
+  border-radius: 6px;
+  background: linear-gradient(180deg, #5a3f28, #38271a);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.45), inset 0 2px 3px rgba(255, 255, 255, 0.08);
+  z-index: 3;
+  pointer-events: none;
+}
+
+body.day .shelf-ledge {
+  background: linear-gradient(180deg, #d9b98a, #b9925f);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.18), inset 0 2px 3px rgba(255, 255, 255, 0.3);
+}
+
+/* ── RECOMMENDATIONS (deliberately no ledge - not "yours" yet) ───────────── */
+.shelf-recommendations-section .recommendation-row {
+  padding-left: 6px;
+}
+
+/* ── SCROLL ARROWS ─────────────────────────────────────────────────────────── */
+.scroll-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-30%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 4;
+}
+
+.scroll-arrow-left {
+  left: -6px;
+}
+
+.scroll-arrow-right {
+  right: -6px;
+}
+
+@media (max-width: 600px) {
+  .scroll-arrow {
+    display: none;
   }
 }
 
-/* ── SMALL TABLET (600px – 768px) ──────────────────────────────────────────── */
-@media (max-width: 768px) {
-  .category-page {
-    background-attachment: scroll;
-  }
-
-  .category-title {
-    font-size: 38px;
-    margin-top: 18vh;
-    margin-bottom: 10px;
-  }
-
-  .shelf-row {
-    gap: 6rem;
-  }
-
-  .shelf-row-wrapper {
-    padding: 1rem 3vw 1.5rem;
-  }
-
-  .category-card {
-    width: clamp(90px, 22vw, 140px);
-  }
-
-  .delete-icon {
-    opacity: 1;
-    right: -15px;
-  }
-}
-
-/* ── MOBILE (under 600px) ──────────────────────────────────────────────────── */
+/* ── MOBILE (under 600px) - touch targets get a little breathing room ──────── */
 @media (max-width: 600px) {
   .category-page {
-    background-attachment: scroll;
-  }
-
-  .category-title {
-    font-size: 40px;
-    margin-top: 18vh;
-    margin-bottom: 185px;
-    letter-spacing: 4px;
-  }
-
-  .shelf-row {
-    gap: 6rem;
-  }
-
-  .shelf-row-wrapper {
-    padding: 0.75rem 2vw 1.25rem;
-  }
-
-  .category-card {
-    width: clamp(80px, 26vw, 120px);
-  }
-
-  .category-card h4 {
-    font-size: 13px;
-  }
-
-  .delete-icon {
-    opacity: 1;
-  
-    right: -10px;
+    padding: 110px 4vw 32px;
   }
 }

@@ -12,10 +12,12 @@ const SearchBar = ({ onSearch, category }) => {
 
   return (
     <div className="search-bar">
-      <div className="search-bar-inner">
+      <div className="search-bar-inner neu-input">
         <span className="search-icon">🔍</span>
         <input
           type="text"
+          id="search-query"
+          name="query"
           value={input}
           onChange={(e) => {
             setInput(e.target.value);
@@ -36,7 +38,7 @@ const SearchBar = ({ onSearch, category }) => {
           </button>
         )}
       </div>
-      <button className="search-btn" onClick={handleSearch}>
+      <button className="neu-surface neu-raised search-btn" onClick={handleSearch}>
         Search
       </button>
     </div>

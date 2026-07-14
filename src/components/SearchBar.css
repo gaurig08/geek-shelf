@@ -13,17 +13,9 @@
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  background: rgba(20, 10, 3, 0.7);
-  border: 1.5px solid rgba(180, 120, 40, 0.4);
-  border-radius: 14px;
-  padding: 0 1rem;
-  backdrop-filter: blur(8px);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.search-bar-inner:focus-within {
-  border-color: rgba(200, 144, 10, 0.75);
-  box-shadow: 0 0 18px rgba(200, 144, 10, 0.18);
+  border-radius: 999px;
+  padding: 0 1.2rem;
+  transition: box-shadow 0.2s ease;
 }
 
 .search-icon {
@@ -38,22 +30,16 @@
   background: transparent;
   border: none;
   outline: none;
-  font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+  font-family: 'Quicksand', sans-serif;
   font-size: 1rem;
-  color: #f0dbb0;
+  color: inherit;
   padding: 0.85rem 0;
-  caret-color: #c8900a;
-}
-
-.search-bar-inner input::placeholder {
-  color: #6b5030;
-  font-style: italic;
 }
 
 .clear-btn {
   background: none;
   border: none;
-  color: #6b5030;
+  color: var(--text-muted);
   cursor: pointer;
   font-size: 0.85rem;
   padding: 4px;
@@ -63,33 +49,19 @@
 }
 
 .clear-btn:hover {
-  color: #c8900a;
+  color: var(--text);
 }
 
 .search-btn {
-  font-family: 'Ruge Boogie', cursive;
-  font-size: 1.1rem;
-  padding: 0.75rem 1.8rem;
-  border-radius: 12px;
-  border: 1.5px solid rgba(200, 144, 10, 0.5);
-  background: rgba(120, 65, 10, 0.55);
-  color: #f5d89a;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.6rem 1.3rem;
+  border-radius: 999px;
+  border: none;
   cursor: pointer;
-  transition: all 0.2s ease;
-  backdrop-filter: blur(4px);
   white-space: nowrap;
   flex-shrink: 0;
-}
-
-.search-btn:hover {
-  background: rgba(160, 90, 15, 0.7);
-  border-color: #c8900a;
-  box-shadow: 0 0 16px rgba(200, 144, 10, 0.25);
-  transform: translateY(-1px);
-}
-
-.search-btn:active {
-  transform: translateY(0);
 }
 
 /* ── RESPONSIVE ─────────────────────────────────────────────────────────────── */
@@ -101,13 +73,11 @@
 
   .search-bar-inner {
     width: 100%;
-    border-radius: 12px;
   }
 
   .search-btn {
     width: 100%;
     text-align: center;
-    border-radius: 12px;
-    padding: 0.65rem 1.2rem;
+    padding: 0.75rem 1.2rem;
   }
 }

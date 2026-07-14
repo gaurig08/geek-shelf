@@ -1,10 +1,19 @@
 /* Top of index.css */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap');
+@import './theme.css';
+
 @font-face {
   font-family: 'Ruge Boogie';
   src: url('./assets/RugeBoogie-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap; 
+}
+
+/* Reserved for the "GeekShelf" wordmark and page titles ONLY - never
+   body text, buttons, or anything read frequently/at small sizes. */
+.brand-font {
+  font-family: 'Ruge Boogie', cursive;
 }
 
 body, #root {
@@ -19,13 +28,8 @@ html, body, #root {
   padding: 0;
   overflow-x: hidden;
   
-  font-family: 'Garamond', serif;
+  font-family: 'Quicksand', sans-serif;
   background-color: #0a0a0a;
-  background-image: url("/w1.png");
-  background-size: cover;
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -35,10 +39,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  background: #0e0e1f;
-  color: #f0f8ff;
-  transition: background 0.3s ease-in-out;
-  font-family: 'Ruge Boogie', cursive;
+  background: var(--bg-1);
+  color: var(--text);
+  transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+  font-family: 'Quicksand', sans-serif;
 }
 
 body.no-scroll {

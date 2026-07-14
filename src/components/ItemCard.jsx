@@ -2,9 +2,9 @@ import PropTypes from "prop-types";
 import { Info } from "lucide-react";
 import "./ItemCard.css";
 
-const ItemCard = ({ item, image, title, onAdd, onInfo }) => {
+const ItemCard = ({ image, title, onAdd, onInfo }) => {
   return (
-    <div className="item-card">
+    <div className="neu-surface neu-raised item-card">
       <div className="poster-container">
         <img src={image} alt={title} className="poster" />
       </div>
@@ -22,7 +22,6 @@ const ItemCard = ({ item, image, title, onAdd, onInfo }) => {
 };
 
 ItemCard.propTypes = {
-  item: PropTypes.object.isRequired,
   image: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   onAdd: PropTypes.func.isRequired,
@@ -30,11 +29,3 @@ ItemCard.propTypes = {
 };
 
 export default ItemCard;
-
-
-
-
-
-
-
-

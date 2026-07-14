@@ -7,6 +7,13 @@ const SearchItemModal = ({ itemId, category, onClose }) => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
+  // Capture category at mount time. If the parent's active search tab
+  // changes while this modal is still open (same itemId, but that id now
+  // means something different under the new category), we don't want to
+  // silently refetch garbage - this modal should always describe the
+  // item it was opened for.
+  const [modalCategory] = useState(category);
+
   const fetchSearchItemDetails = async () => {
     setLoading(true);
     setError("");
@@ -14,14 +21,14 @@ const SearchItemModal = ({ itemId, category, onClose }) => {
     try {
       let response, data;
 
-      switch (category) {
+      switch (modalCategory) {
         case "Anime":
           response = await fetch(`https://api.jikan.moe/v4/anime/${itemId}`);
           data = await response.json();
           setItem(data.data);
           break;
 
-        case "Movies":
+        case "Movie":
           response = await fetch(`/api/tmdb?path=/movie/${itemId}`);
           data = await response.json();
           setItem(data);
@@ -33,14 +40,14 @@ const SearchItemModal = ({ itemId, category, onClose }) => {
           setItem(data);
           break;
 
-        case "Books":
+        case "Book":
           response = await fetch(`/api/books?path=/volumes/${itemId}`);
           data = await response.json();
           setItem(data.volumeInfo);
           break;
 
         default:
-          throw new Error("Unknown category.");
+          throw new Error(`Unknown category: ${modalCategory}`);
       }
     } catch (err) {
       console.error(err);
@@ -50,11 +57,23 @@ const SearchItemModal = ({ itemId, category, onClose }) => {
     }
   };
 
+  // fetchSearchItemDetails intentionally omitted: it's redefined every
+  // render, so including it would re-trigger this effect (and its own
+  // setState calls) on every render, causing a fetch loop. itemId is the
+  // only thing that should ever cause a refetch - modalCategory is fixed
+  // for the lifetime of this modal (see comment above).
   useEffect(() => {
     fetchSearchItemDetails();
-  }, [itemId, category]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [itemId]);
 
-  if (loading) return <div className="modal">Loading...</div>;
+  if (loading) return (
+    <div className="modal-overlay">
+      <div className="modal modal-loading">
+        <div className="spinner" />
+      </div>
+    </div>
+  );
   if (error) return <div className="modal error">{error}</div>;
   if (!item) return null;
 
@@ -70,20 +89,32 @@ const SearchItemModal = ({ itemId, category, onClose }) => {
 
   const title =
     item.title || item.name || item.title_english || item.title_original || "Untitled";
-  const summary =
+  // Strip HTML tags Google Books frequently embeds in descriptions
+  // (e.g. "<p>A dark academia romantasy...</p><p></p>") - browsers don't
+  // render these as tags in plain text, they'd show up literally.
+  const stripHtml = (str) => str.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+
+  const rawSummary =
     item.synopsis || item.description || item.overview || "No summary available.";
-  const genres = item.genres?.map((g) => g.name || g).join(", ") || "N/A";
+  const summary = stripHtml(rawSummary);
+
+  // TMDB/Jikan use item.genres ([{name}] or [string]); Google Books uses
+  // item.categories (plain strings, since volumeInfo has no "genres" field).
+  const genreList = item.genres || item.categories || [];
+  const genres = genreList.length
+    ? genreList.map((g) => g.name || g).join(", ")
+    : "N/A";
 
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
         <button className="close-button" onClick={onClose}>×</button>
-        <div className="poster-container">
+        <div className="modal-poster-container">
           <img src={image} alt={title} className="modal-poster" />
         </div>
         <div className="modal-details">
           <h2>{title}</h2>
-          <p><strong>Category:</strong> {category}</p>
+          <p><strong>Category:</strong> {modalCategory}</p>
           <p><strong>Genre:</strong> {genres}</p>
           <p className="summary"><strong>Summary:</strong> {summary}</p>
         </div>

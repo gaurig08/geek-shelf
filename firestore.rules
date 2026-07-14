@@ -1,0 +1,33 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // A signed-in user can only ever act as themselves - this is the
+    // core rule everything else depends on.
+    function isOwner(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+
+    // ── users/{uid} ── profile doc: email, emoji, theme, room preference
+    match /users/{uid} {
+      allow read, write: if isOwner(uid);
+
+      // ── users/{uid}/shelf/{itemId} ── each item on that user's shelf
+      match /shelf/{itemId} {
+        allow read, delete: if isOwner(uid);
+
+        allow create: if isOwner(uid)
+          && request.resource.data.title is string
+          && request.resource.data.title.size() > 0
+          && request.resource.data.category in ["Movie", "Series", "Book", "Anime"];
+
+        allow update: if isOwner(uid);
+      }
+    }
+
+    // Everything else is denied by default - no rule above matched, so
+    // nothing outside users/{uid} and its shelf subcollection is
+    // reachable at all, by anyone, ever.
+  }
+}

@@ -57,7 +57,7 @@ const SearchPage = () => {
         filtered   = (data.items || []).filter(b => isSafeContent(b, "book"));
 
       } else if (category === "Anime") {
-        filtered = await fetchSafeAnime(q);
+        filtered = await fetchSafeAnime(q, signal);
       }
 
       searchCache.set(cacheKey, filtered);
@@ -75,14 +75,19 @@ const SearchPage = () => {
   const handleSearch = useCallback((q) => {
     setQuery(q);
     if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => fetchResults(q), 400);
+    debounceRef.current = setTimeout(() => fetchResults(q), 550);
   }, [fetchResults]);
 
-  // Re-run search when category changes if there's already a query
+  // Re-run search when category changes if there's already a query.
+  // query/fetchResults intentionally omitted: this should only re-trigger
+  // on category change, using whatever query is current at that moment -
+  // adding them would cause a duplicate fetch on every keystroke on top
+  // of the debounced handleSearch call below.
   useEffect(() => {
     setResults([]);
     setError("");
     if (query.trim()) fetchResults(query);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [category]);
 
   useEffect(() => {
@@ -106,18 +111,12 @@ const SearchPage = () => {
 
       <div className="search-inner">
 
-        {/* Header */}
-        <div className="search-header">
-          <h1 className="search-title">Find Your Next Obsession</h1>
-          <p className="search-subtitle">Search across books, movies, series and anime</p>
-        </div>
-
         {/* Category tabs */}
         <div className="category-tabs">
           {CATEGORIES.map(cat => (
             <button
               key={cat}
-              className={`cat-tab ${category === cat ? "active" : ""}`}
+              className={`neu-surface cat-tab ${category === cat ? "neu-inset" : "neu-raised"}`}
               onClick={() => setCategory(cat)}
             >
               {LABELS[cat]}
