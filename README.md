@@ -32,7 +32,7 @@ Live Link - https://geek-shelf.vercel.app/
 - Categorization by genre/type, normalized across all three source APIs
 
 ☁️ **Deployment**
-- Hosted on Vercel with live CI/CD — every push to main auto-builds and deploys
+- Hosted on Vercel with live CI/CD - every push to main auto-builds and deploys
 
 ## ⚙️ Tech Stack
 
